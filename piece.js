@@ -32,15 +32,13 @@ class Piece {
   }
 
   move(key) {
-    if (this.valid(key)) {
-      if (key == KEY.LEFT) {
-        this.x -= 1
-      } else if (key == KEY.RIGHT) {
-        this.x += 1
-      } else if (key == KEY.DOWN) {
-        this.y += 1
-      } 
-    }
+    if (key == KEY.LEFT) {
+      this.x -= 1
+    } else if (key == KEY.RIGHT) {
+      this.x += 1
+    } else if (key == KEY.DOWN) {
+      this.y += 1
+    } 
 
     if (key == KEY.DROP) {
       while (this.valid(KEY.DOWN)) {
@@ -61,28 +59,6 @@ class Piece {
     shape.forEach(row => row.reverse());
   }
 
-  valid(key) {
-    var newx = this.x
-    var newy = this.y
-    if (key == KEY.LEFT) {
-      newx -= 1
-    } else if (key == KEY.RIGHT) {
-      newx += 1
-    } else if (key == KEY.DOWN) {
-      newy += 1
-    }
-
-    for (let i = 0; i < this.shape.length; i++) {
-      for (let j = 0; j < this.shape[0].length; j++) {
-        if (this.shape[j][i] > 0) { 
-          if ((newx + i < 0) || (newx + i > COLS - 1) || (newy + j > ROWS - 1)) {
-            return false
-          }
-        }
-      }
-    }
-    return true
-  }
 
   randomShape() {
     return Math.floor(Math.random() * SHAPES.length)
