@@ -27,6 +27,7 @@ class Board {
 
   draw() {
     this.piece.draw()
+    this.drawBoard()
   }
 
   drop() {
@@ -34,7 +35,7 @@ class Board {
       this.piece.move(KEY.DOWN)
     } else {
       this.freeze()
-      console.table(this.grid)
+      this.clearLines()
       this.piece = new Piece(ctx)
     }
   }
@@ -72,6 +73,29 @@ class Board {
           var tempy = this.piece.y + y
           this.grid[tempy][tempx] = this.piece.shape[y][x]
         }
+      }
+    }
+  }
+
+  drawBoard() {
+    for (let y = 0; y < this.grid[0].length; y++) {
+      for (let x = 0; x < this.grid.length; x++) {
+        if (this.grid[x][y] > 0) {
+          this.ctx.fillStyle = SHAPES[this.grid[x][y] - 1].color
+          this.ctx.fillRect(y, x, 1, 1)
+        }
+      }
+    }
+  }
+
+  clearLines() {
+    for (let row = 0; row < this.grid.length; row++) {
+      if (this.grid[row].every(i => i > 0)) {
+        // Remove the row.
+        this.grid.splice(row, 1);
+
+        // Add zero filled row at the top.
+        this.grid.unshift(Array(COLS).fill(0));
       }
     }
   }

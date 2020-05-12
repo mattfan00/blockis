@@ -39,12 +39,6 @@ class Piece {
     } else if (key == KEY.DOWN) {
       this.y += 1
     } 
-
-    if (key == KEY.DROP) {
-      while (this.valid(KEY.DOWN)) {
-        this.y += 1
-      }
-    }
   }
 
   rotate() {

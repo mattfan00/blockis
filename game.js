@@ -27,14 +27,19 @@ function addEventListener() {
   document.addEventListener('keydown', e => {
     e.preventDefault()
   
-    if (moveList.includes(e.keyCode)) {
+    if (e.keyCode == KEY.DROP) {
+      while (board.valid(KEY.DOWN)) {
+        board.piece.move(KEY.DOWN)
+      }
+    } else if (e.keyCode == KEY.ROTATE) {
+      board.piece.rotate()
+    } else if (moveList.includes(e.keyCode)) {
       if (board.valid(e.keyCode)) {
         board.piece.move(e.keyCode)
       }
-    } else if (e.keyCode == KEY.ROTATE) {
-        board.piece.rotate()
     }
+
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    board.piece.draw()
+    board.draw()
   })
 }

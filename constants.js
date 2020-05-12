@@ -14,8 +14,7 @@ const KEY = {
 const moveList = [
   KEY.LEFT,
   KEY.RIGHT,
-  KEY.DOWN,
-  KEY.DROP
+  KEY.DOWN
 ]
 
 const SHAPES = [
