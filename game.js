@@ -1,26 +1,34 @@
 const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
 
+const canvasNext = document.getElementById('next')
+const ctxNext = canvasNext.getContext('2d');
 
-let board = new Board(ctx)
+let board = new Board(ctx, ctxNext)
 
 function play() {
   board.reset()
   board.draw()
+  addEventListener()
+  time = { start: performance.now(), elapsed: 0, buffer: 750 }
   
   animate()
 }
 
-function animate() {
-  addEventListener()
-  setInterval(() => {
-    board.drop()
+function animate(now = 0) {
+  time.elapsed = now - time.start;
+  if (time.elapsed > time.buffer) {
+    time.start = now;
+    if (!board.drop()) {
+      return;
+    }
+  }
 
-    // Clear board before drawing new state.
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  // Clear board before drawing new state.
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    board.draw()
-  }, 750)
+  board.draw()
+  requestAnimationFrame(animate)
 }
 
 function addEventListener() {
@@ -31,6 +39,8 @@ function addEventListener() {
       while (board.valid(KEY.DOWN)) {
         board.piece.move(KEY.DOWN)
       }
+      board.piece.draw()
+      board.drop()
     } else if (e.keyCode == KEY.ROTATE) {
       board.piece.rotate()
     } else if (moveList.includes(e.keyCode)) {

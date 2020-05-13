@@ -7,6 +7,8 @@ class Piece {
   
   constructor(ctx) {
     this.ctx = ctx;
+    this.x = 0;
+    this.y = 0;
     this.spawn();
   }
   
@@ -14,10 +16,7 @@ class Piece {
     const i = this.randomShape()
     this.color = SHAPES[i].color
     this.shape = SHAPES[i].shape
-    
-    // Starting position.
-    this.x = 3;
-    this.y = 0;
+  
   }
 
   draw() {

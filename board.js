@@ -1,11 +1,13 @@
 class Board {
   ctx;
+  ctxNext;
   piece;
+  nextPiece;
   grid;
 
-  constructor(ctx) {
+  constructor(ctx, ctxNext) {
     this.ctx = ctx
-    this.piece = new Piece(ctx)
+    this.ctxNext = ctxNext
     this.init()
   }
 
@@ -13,15 +15,21 @@ class Board {
     // Calculate size of canvas from constants.
     this.ctx.canvas.width = COLS * BLOCK_SIZE;
     this.ctx.canvas.height = ROWS * BLOCK_SIZE;
-
     // Scale blocks
     this.ctx.scale(BLOCK_SIZE, BLOCK_SIZE);
+
+    // Size canvas for four blocks.
+    this.ctxNext.canvas.width = 4 * BLOCK_SIZE;
+    this.ctxNext.canvas.height = 4 * BLOCK_SIZE;
+    this.ctxNext.scale(BLOCK_SIZE, BLOCK_SIZE);
   }
   
   // Reset the board when we start a new game.
   reset() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    this.ctxNext.clearRect(0, 0, this.ctxNext.canvas.width, this.ctxNext.canvas.height);
     this.piece = new Piece(this.ctx);
+    this.getNewPiece()
     this.grid = this.getEmptyBoard();
   }
 
@@ -30,14 +38,27 @@ class Board {
     this.drawBoard()
   }
 
+  getNewPiece() {
+    this.nextPiece = new Piece(this.ctxNext);
+    this.ctxNext.clearRect(0, 0, this.ctxNext.canvas.width, this.ctxNext.canvas.height);
+    this.nextPiece.draw();
+  }
+
   drop() {
     if (this.valid(KEY.DOWN)) {
       this.piece.move(KEY.DOWN)
     } else {
       this.freeze()
       this.clearLines()
-      this.piece = new Piece(ctx)
+      if (this.piece.y === 0) {
+        // Game over
+        return false;
+      }
+      this.piece = this.nextPiece
+      this.piece.ctx = this.ctx;
+      this.getNewPiece()
     }
+    return true
   }
 
   valid(key) {
