@@ -29,8 +29,8 @@ const SHAPES = [
     ]
   },
   { 
-    color: 'rgba(0, 0, 255, 1)',
-    ghostColor: 'rgba(0, 0, 255, 0.5)',
+    color: 'rgba(69, 72, 255, 1)', // blue
+    ghostColor: 'rgba(69, 72, 255, 0.5)',
     shape: [
       [2, 0, 0], 
       [2, 2, 2], 
@@ -63,8 +63,8 @@ const SHAPES = [
     ]
   },
   { 
-    color: 'rgba(128, 0, 128, 1)',
-    ghostColor: 'rgba(128, 0, 128, 0.5)',
+    color: 'rgba(163, 18, 163, 1)', // purple
+    ghostColor: 'rgba(163, 18, 163, 0.5)',
     shape: [
       [0, 6, 0], 
       [6, 6, 6], 

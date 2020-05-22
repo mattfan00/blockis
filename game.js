@@ -20,7 +20,7 @@ function animate(now = 0) {
   if (time.elapsed > time.buffer) {
     time.start = now;
     if (!board.drop()) {
-      return;
+      return
     }
   }
 
@@ -42,7 +42,9 @@ function addEventListener() {
       board.piece.draw()
       board.drop()
     } else if (e.keyCode == KEY.ROTATE) {
-      board.piece.rotate()
+      if (board.validRotate()) {
+        board.piece.shape = board.piece.rotate()  
+      }
     } else if (moveList.includes(e.keyCode)) {
       if (board.valid(e.keyCode)) {
         board.piece.move(e.keyCode)
@@ -53,3 +55,5 @@ function addEventListener() {
     board.draw()
   })
 }
+
+

@@ -42,7 +42,7 @@ class Piece {
   }
 
   rotate() {
-    var shape = this.shape
+    var shape = JSON.parse(JSON.stringify(this.shape)) // creates copy of multidimensional array
 
     for (let y = 0; y < shape.length; ++y) {
       for (let x = 0; x < y; ++x) {
@@ -51,6 +51,7 @@ class Piece {
     }
 
     shape.forEach(row => row.reverse());
+    return shape
   }
 
 

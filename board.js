@@ -58,7 +58,7 @@ class Board {
     } else {
       this.freeze()
       this.clearLines()
-      if (this.piece.y === 0) {
+      if (this.piece.y <= 0) {
         // Game over
         return false;
       }
@@ -92,6 +92,23 @@ class Board {
       }
     }
     return true
+  }
+  
+  validRotate(piece=this.piece) {
+    var newShape = piece.rotate()
+    for (let y = 0; y < newShape[0].length; y++) {
+      for (let x = 0; x < newShape.length; x++) {
+        if (newShape[y][x] > 0) { 
+          var tempx = piece.x + x
+          var tempy = piece.y + y
+          if ((tempx < 0) || (tempx > COLS - 1) || (tempy > ROWS - 1) || (this.grid[tempy][tempx] != 0)) {
+            return false
+          }
+        }
+      }
+    }
+    return true
+
   }
 
   freeze() { 
