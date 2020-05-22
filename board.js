@@ -3,6 +3,7 @@ class Board {
   ctxNext;
   piece;
   nextPiece;
+  ghost;
   grid;
 
   constructor(ctx, ctxNext) {
@@ -29,12 +30,19 @@ class Board {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctxNext.clearRect(0, 0, this.ctxNext.canvas.width, this.ctxNext.canvas.height);
     this.piece = new Piece(this.ctx);
+    this.ghost = Object.create(this.piece)
     this.getNewPiece()
     this.grid = this.getEmptyBoard();
   }
 
   draw() {
+    this.ghost = Object.create(this.piece) // copy piece
+    this.ghost.makeGhost()
+    while (this.valid(KEY.DOWN, this.ghost)) {
+      this.ghost.move(KEY.DOWN)
+    }
     this.piece.draw()
+    this.ghost.draw()
     this.drawBoard()
   }
 
@@ -61,9 +69,9 @@ class Board {
     return true
   }
 
-  valid(key) {
-    var newx = this.piece.x
-    var newy = this.piece.y
+  valid(key, piece=this.piece) {
+    var newx = piece.x
+    var newy = piece.y
     if (key == KEY.LEFT) {
       newx -= 1
     } else if (key == KEY.RIGHT) {
@@ -72,9 +80,9 @@ class Board {
       newy += 1
     }
 
-    for (let y = 0; y < this.piece.shape[0].length; y++) {
-      for (let x = 0; x < this.piece.shape.length; x++) {
-        if (this.piece.shape[y][x] > 0) { 
+    for (let y = 0; y < piece.shape[0].length; y++) {
+      for (let x = 0; x < piece.shape.length; x++) {
+        if (piece.shape[y][x] > 0) { 
           var tempx = newx + x
           var tempy = newy + y
           if ((tempx < 0) || (tempx > COLS - 1) || (tempy > ROWS - 1) || (this.grid[tempy][tempx] != 0)) {

@@ -3,6 +3,7 @@ class Piece {
   y;
   color;
   shape;
+  shapeId;
   ctx;
   
   constructor(ctx) {
@@ -12,10 +13,10 @@ class Piece {
     this.spawn();
   }
   
-  spawn() {
-    const i = this.randomShape()
-    this.color = SHAPES[i].color
-    this.shape = SHAPES[i].shape
+  spawn() { 
+    this.shapeId = this.randomShape()
+    this.color = SHAPES[this.shapeId].color
+    this.shape = SHAPES[this.shapeId].shape
   
   }
 
@@ -55,5 +56,9 @@ class Piece {
 
   randomShape() {
     return Math.floor(Math.random() * SHAPES.length)
+  }
+
+  makeGhost() {
+    this.color = SHAPES[this.shapeId].ghostColor
   }
 }

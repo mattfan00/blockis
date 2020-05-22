@@ -19,7 +19,8 @@ const moveList = [
 
 const SHAPES = [
   { 
-    color: 'cyan',
+    color: 'rgba(0, 255, 255, 1)',
+    ghostColor: 'rgba(0, 255, 255, 0.5)',
     shape: [
       [1, 1, 1, 1], 
       [0, 0, 0, 0], 
@@ -28,7 +29,8 @@ const SHAPES = [
     ]
   },
   { 
-    color: 'blue',
+    color: 'rgba(0, 0, 255, 1)',
+    ghostColor: 'rgba(0, 0, 255, 0.5)',
     shape: [
       [2, 0, 0], 
       [2, 2, 2], 
@@ -36,21 +38,24 @@ const SHAPES = [
     ]
   },
   { 
-    color: 'orange',
+    color: 'rgba(255, 165, 0, 1)',
+    ghostColor: 'rgba(255, 165, 0, 0.5)',
     shape: [
       [0, 0, 3], 
       [3, 3, 3], 
       [0, 0, 0]]
   },
   { 
-    color: 'yellow',
+    color: 'rgba(255, 255, 0, 1)',
+    ghostColor: 'rgba(255, 255, 0, 0.5)',
     shape: [
       [4, 4], 
       [4, 4]
     ]
   },
   { 
-    color: 'green',
+    color: 'rgba(0, 255, 0, 1)',
+    ghostColor: 'rgba(0, 255, 0, 0.5)',
     shape: [
       [0, 5, 5], 
       [5, 5, 0], 
@@ -58,7 +63,8 @@ const SHAPES = [
     ]
   },
   { 
-    color: 'purple',
+    color: 'rgba(128, 0, 128, 1)',
+    ghostColor: 'rgba(128, 0, 128, 0.5)',
     shape: [
       [0, 6, 0], 
       [6, 6, 6], 
@@ -66,7 +72,8 @@ const SHAPES = [
     ]
   },
   { 
-    color: 'red',
+    color: 'rgba(255, 0, 0, 1)',
+    ghostColor: 'rgba(255, 0, 0, 0.5)',
     shape: [
       [7, 7, 0], 
       [0, 7, 7], 
