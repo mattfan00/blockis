@@ -2,9 +2,12 @@
 <html>
 <head>
 
+  <link rel='stylesheet' href="stylesheets/index.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link rel='stylesheet' href='stylesheets/game.css'>
 </head>
 <body>
+  <%- include('templates/navBar.ejs') %>
   <div class='game'>
     <canvas id="board" class="game-board"></canvas>
     <canvas id="next" class="game-board-next"></canvas>
@@ -12,6 +15,7 @@
   <button onclick="play()" class="play-button">Play</button>
 
 
+  <script src='/socket.io/socket.io.js'></script>
   <script src='scripts/constants.js'></script>
   <script src='scripts/board.js'></script>
   <script src='scripts/piece.js'></script>

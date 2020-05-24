@@ -1,0 +1,19 @@
+<nav class='top-nav'>
+  <div class='left'>
+    <a href="/" class="nav-item">
+      Home
+    </a>
+  </div>
+  <div class='right'>
+    <% if (currentUser) { %>
+      <a class="nav-item"><%= currentUser.username %></a>
+    <% } else { %>
+      <a href='/login' class='nav-item'>
+        Login
+      </a>
+      <a href='/register' class='nav-item'>
+        Register
+      </a>
+    <% } %>
+  </div>
+</nav>

@@ -8,7 +8,7 @@ router.get('/login', (req, res) => {
 })
 
 router.post("/login", passport.authenticate("local", {
-  successRedirect: "/chat",
+  successRedirect: "/",
   failureRedirect: "/login"
 }), function(req, res) {
 })
@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
     if(!newUser) throw Error('Error registering user')
 
     passport.authenticate('local')(req, res, () => {
-      res.redirect('/chat')
+      res.redirect('/')
     })
   } catch(err) {
     console.log(err)
