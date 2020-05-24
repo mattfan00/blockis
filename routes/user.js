@@ -3,6 +3,10 @@ const express = require('express')
       passport = require("passport")
       User = require('../models/user')
 
+router.get('/api/user', (req, res) => {
+  res.json(req.user)
+})
+
 router.get('/login', (req, res) => {
   res.render('login')
 })

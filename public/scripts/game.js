@@ -1,5 +1,9 @@
 const socket = io()
 
+const chatId = window.location.pathname.split('/')[2]
+
+socket.emit('joinRoom', chatId)
+
 socket.on('message', (msg) => {
   console.log(msg)
 })
@@ -56,6 +60,8 @@ function addEventListener() {
         board.piece.move(e.keyCode)
       }
     }
+
+    socket.emit('move', 'A player has moved')
 
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     board.draw()

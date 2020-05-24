@@ -2,13 +2,13 @@
 <html>
   <head>
     
-    <link rel='stylesheet' href="stylesheets/index.css">
+    <link rel='stylesheet' href="/stylesheets/index.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   </head>
   <body>
     <%- include('templates/navBar.ejs') %>
 
-    <form action="register" method="POST">
+    <form action="/register" method="POST">
       <input placeholder="Username" name="username">
       <input type="password" placeholder="Password" name="password">
       <button>Submit</button>

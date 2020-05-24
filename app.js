@@ -6,6 +6,7 @@ const express = require('express')
       passport = require('passport')
       LocalStrategy = require('passport-local')
       User = require('./models/user')
+      Room = require('./models/room')
 
 
 const app = express()
@@ -13,6 +14,7 @@ const app = express()
       io = socketio(server)
 
 const userRoutes = require('./routes/user')
+      roomRoutes = require('./routes/room')
       ioRoutes = require('./routes/socket')(io)
 
 
@@ -45,16 +47,13 @@ app.use(function(req, res, next) {
 
 
 app.use(userRoutes)
+app.use(roomRoutes)
 ioRoutes
 
 app.get('/', (req, res) => {
-  console.log(req.user)
-  res.render('index')
-})
-
-app.get('/game', (req, res) => {
-  console.log(req.user)
-  res.render('game')
+  Room.find({}, (err, foundRooms) => {
+    res.render('index', {rooms:foundRooms})
+  })
 })
 
 
