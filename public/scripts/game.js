@@ -1,13 +1,3 @@
-const socket = io()
-
-const chatId = window.location.pathname.split('/')[2]
-
-socket.emit('joinRoom', chatId)
-
-socket.on('message', (msg) => {
-  console.log(msg)
-})
-
 const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
 
