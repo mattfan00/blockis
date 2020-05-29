@@ -19,6 +19,23 @@ socket.on('startGame', () => {
   animate()
 })
 
+socket.on('draw', (drawDetails) => {
+  // console.log(drawDetails)
+  const canvasPlayer = document.querySelector('.board-' + drawDetails.socketId)
+  const ctxPlayer = canvasPlayer.getContext('2d');
+
+  ctxPlayer.clearRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height);
+
+  for (let y = 0; y < drawDetails.grid[0].length; y++) {
+    for (let x = 0; x < drawDetails.grid.length; x++) {
+      if (drawDetails.grid[x][y] > 0) {
+        ctxPlayer.fillStyle = SHAPES[drawDetails.grid[x][y] - 1].color
+        ctxPlayer.fillRect(y*10, x*10, 10, 10)
+      }
+    }
+  }
+})
+
 function animate(now = 0) {
   time.elapsed = now - time.start;
   if (time.elapsed > time.buffer) {

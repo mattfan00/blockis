@@ -58,6 +58,11 @@ class Board {
     } else {
       this.freeze()
       this.clearLines()
+      socket.emit('draw', {
+        username,
+        socketId: socket.id,
+        grid: this.grid
+      })
       if (this.piece.y <= 0) {
         // Game over
         return false;

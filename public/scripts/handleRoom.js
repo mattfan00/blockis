@@ -6,7 +6,6 @@ const username = generateName()
 
 socket.emit('joinRoom', {username, roomId})
 
-
 socket.on('getOtherPlayers', (users) => {
   // Add in the other players
   console.log(users)
@@ -20,8 +19,8 @@ socket.on('getOtherPlayers', (users) => {
     var div = document.createElement('div')
     div.innerHTML = `
       <div class="player-slot">
-        ${user.username}
-        <canvas class="board" width="100" height="200"></canvas>
+        <div>${user.username}</div>
+        <canvas class="board board-${user.socketId}" width="100" height="200"></canvas>
       </div>
     `
     players.appendChild(div)
@@ -29,5 +28,5 @@ socket.on('getOtherPlayers', (users) => {
 })
 
 socket.on('message', (msg) => {
-  console.log(msg)
+  console.table(msg)
 })

@@ -35,6 +35,11 @@ module.exports = (io) => {
       io.to(roomId).emit('startGame')
     })
 
+    socket.on('draw', (drawDetails) => {
+      // console.log(drawDetails)
+      socket.to(roomId).broadcast.emit('draw', drawDetails)
+    })
+
     // Send message to everyone that a user has left the chat 
     socket.on('disconnect', () => {
       Room.findById(roomId, (err, foundRoom) => {
