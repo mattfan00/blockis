@@ -19,8 +19,9 @@ socket.on('getOtherPlayers', (users) => {
     console.log(user)
     var div = document.createElement('div')
     div.innerHTML = `
-      <div>
+      <div class="player-slot">
         ${user.username}
+        <canvas class="board" width="100" height="200"></canvas>
       </div>
     `
     players.appendChild(div)

@@ -31,6 +31,10 @@ module.exports = (io) => {
       })
     })
 
+    socket.on('startGame', () => {
+      io.to(roomId).emit('startGame')
+    })
+
     // Send message to everyone that a user has left the chat 
     socket.on('disconnect', () => {
       Room.findById(roomId, (err, foundRoom) => {

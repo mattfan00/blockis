@@ -8,15 +8,17 @@
 </head>
 <body>
   <%- include('templates/navBar.ejs') %>
-  <div class='game'>
-    <canvas id="board" class="game-board"></canvas>
-    <canvas id="next" class="game-board-next"></canvas>
+  <div class='games'>
+    <div class='main-game'>
+      <canvas id="board" class="main-game-board"></canvas>
+      <canvas id="next" class="main-game-next"></canvas>
+    </div>
+    <div class="players">
+      
+    </div>
   </div>
   <button onclick="play()" class="play-button">Play</button>
 
-  <div class='players'>
-    
-  </div>
 
 
 

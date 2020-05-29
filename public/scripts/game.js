@@ -7,13 +7,17 @@ const ctxNext = canvasNext.getContext('2d');
 let board = new Board(ctx, ctxNext)
 
 function play() {
+  socket.emit('startGame')
+}
+
+socket.on('startGame', () => {
   board.reset()
   board.draw()
   addEventListener()
   time = { start: performance.now(), elapsed: 0, buffer: 750 }
   
   animate()
-}
+})
 
 function animate(now = 0) {
   time.elapsed = now - time.start;

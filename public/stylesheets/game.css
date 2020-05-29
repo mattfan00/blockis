@@ -2,13 +2,37 @@ body {
   /* background-color: #252525; */
 }
 
-.game {
+.games {
+  display: flex;
+  justify-content: space-around;
+}
+
+.main-game {
   display: flex;
   align-items: flex-start;
 }
 
-.game-board {
+.main-game-board {
   border: 10px solid #03719C;
   border-top: none;
   margin-right: 20px;
+}
+
+.main-game-next {
+  
+}
+
+.players {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+
+.player-slot {
+  display: flex;
+  flex-direction: column;
+}
+
+.board {
+  border: 1px solid black;
 }
