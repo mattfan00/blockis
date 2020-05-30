@@ -2,13 +2,11 @@ const Room = require('../models/room')
 
 module.exports = (io) => {
   io.on('connection', (socket) => {    
-    // socket.on('move', (msg) => {
-    //   socket.broadcast.emit('message', msg)
-    // })
     var roomId
     
     socket.on('joinRoom', (msg) => {
       roomId = msg.roomId
+      console.log(roomId)
       Room.findById(roomId, (err, foundRoom) => {
         var newUser = {
           username: msg.username,
@@ -41,6 +39,7 @@ module.exports = (io) => {
 
     // Send message to everyone that a user has left the chat 
     socket.on('disconnect', () => {
+      console.log(roomId)
       Room.findById(roomId, (err, foundRoom) => {
         var newUsers = foundRoom.users.filter(user => user.socketId != socket.id)
 
@@ -55,9 +54,5 @@ module.exports = (io) => {
         io.emit('message', 'A user has left the chat')
       })
     })
-
-  //   socket.on('chat message', (msg) => {
-  //     io.to(msg.chatId).emit('message', formatMessage(msg.user, msg.value))
-  //   })
   })
 }

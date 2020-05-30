@@ -46,13 +46,13 @@ class Board {
     this.piece.draw()
     this.ghost.draw()
     this.drawBoard()
-    socket.emit('draw', {
-      username,
-      socketId: socket.id,
-      grid: this.grid,
-      piece: this.piece,
-      ghost: this.ghost
-    })
+    // socket.emit('draw', {
+    //   username,
+    //   socketId: socket.id,
+    //   grid: this.grid,
+    //   piece: this.piece,
+    //   ghost: this.ghost
+    // })
   }
 
   getNewPiece() {
@@ -67,11 +67,6 @@ class Board {
     } else {
       this.freeze()
       this.clearLines()
-      // socket.emit('draw', {
-      //   username,
-      //   socketId: socket.id,
-      //   grid: this.grid
-      // })
       if (this.piece.y <= 0) {
         // Game over
         return false;
@@ -80,6 +75,13 @@ class Board {
       this.piece.ctx = this.ctx;
       this.getNewPiece()
     }
+    socket.emit('draw', {
+      username,
+      socketId: socket.id,
+      grid: this.grid,
+      piece: this.piece, 
+      ghost: this.ghost
+    })
     return true
   }
 

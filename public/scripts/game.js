@@ -92,10 +92,16 @@ function addEventListener() {
       }
     }
 
-    socket.emit('move', 'A player has moved')
-
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     board.draw()
+
+    socket.emit('draw', {
+      username,
+      socketId: socket.id,
+      grid: board.grid,
+      piece: board.piece,
+      ghost: board.ghost
+    })
   })
 }
 
