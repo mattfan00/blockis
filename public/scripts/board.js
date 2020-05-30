@@ -30,13 +30,15 @@ class Board {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctxNext.clearRect(0, 0, this.ctxNext.canvas.width, this.ctxNext.canvas.height);
     this.piece = new Piece(this.ctx);
-    this.ghost = Object.create(this.piece)
+    this.ghost = Object.assign(Object.create(Object.getPrototypeOf(this.piece)), this.piece)
     this.getNewPiece()
     this.grid = this.getEmptyBoard();
   }
 
   draw() {
-    this.ghost = Object.create(this.piece) // copy piece
+    // this.ghost = Object.create(this.piece) // copy piece
+    this.ghost = Object.assign(Object.create(Object.getPrototypeOf(this.piece)), this.piece) // copy piece
+    console.log(this.ghost)
     this.ghost.makeGhost()
     while (this.valid(KEY.DOWN, this.ghost)) {
       this.ghost.move(KEY.DOWN)
@@ -44,6 +46,13 @@ class Board {
     this.piece.draw()
     this.ghost.draw()
     this.drawBoard()
+    socket.emit('draw', {
+      username,
+      socketId: socket.id,
+      grid: this.grid,
+      piece: this.piece,
+      ghost: this.ghost
+    })
   }
 
   getNewPiece() {
@@ -58,11 +67,11 @@ class Board {
     } else {
       this.freeze()
       this.clearLines()
-      socket.emit('draw', {
-        username,
-        socketId: socket.id,
-        grid: this.grid
-      })
+      // socket.emit('draw', {
+      //   username,
+      //   socketId: socket.id,
+      //   grid: this.grid
+      // })
       if (this.piece.y <= 0) {
         // Game over
         return false;

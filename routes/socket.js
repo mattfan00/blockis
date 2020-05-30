@@ -26,8 +26,8 @@ module.exports = (io) => {
         // Send the list of the other users
         io.to(roomId).emit('getOtherPlayers', foundRoom.users)
 
-        // Send message to the whole lobby except the user that joined
-        socket.to(roomId).broadcast.emit('message', msg.username + ' has joined the room')
+        // // Send message to the whole lobby except the user that joined
+        // socket.to(roomId).broadcast.emit('message', msg.username + ' has joined the room')
       })
     })
 
@@ -36,7 +36,6 @@ module.exports = (io) => {
     })
 
     socket.on('draw', (drawDetails) => {
-      // console.log(drawDetails)
       socket.to(roomId).broadcast.emit('draw', drawDetails)
     })
 

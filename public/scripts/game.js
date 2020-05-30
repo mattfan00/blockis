@@ -20,12 +20,32 @@ socket.on('startGame', () => {
 })
 
 socket.on('draw', (drawDetails) => {
-  // console.log(drawDetails)
   const canvasPlayer = document.querySelector('.board-' + drawDetails.socketId)
   const ctxPlayer = canvasPlayer.getContext('2d');
 
   ctxPlayer.clearRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height);
 
+  // draw other player pieces
+  ctxPlayer.fillStyle = drawDetails.piece.color
+  for (let i = 0; i < drawDetails.piece.shape.length; i++) {
+    for (let j = 0; j < drawDetails.piece.shape[0].length; j++) {
+      if (drawDetails.piece.shape[j][i] > 0) { 
+        ctxPlayer.fillRect((drawDetails.piece.x + i)*10, (drawDetails.piece.y + j)*10, 10, 10)
+      }
+    }
+  }
+
+  // draw other player ghost pieces
+  ctxPlayer.fillStyle = drawDetails.ghost.color
+  for (let i = 0; i < drawDetails.ghost.shape.length; i++) {
+    for (let j = 0; j < drawDetails.ghost.shape[0].length; j++) {
+      if (drawDetails.ghost.shape[j][i] > 0) { 
+        ctxPlayer.fillRect((drawDetails.ghost.x + i)*10, (drawDetails.ghost.y + j)*10, 10, 10)
+      }
+    }
+  }
+
+  // draw other player boards
   for (let y = 0; y < drawDetails.grid[0].length; y++) {
     for (let x = 0; x < drawDetails.grid.length; x++) {
       if (drawDetails.grid[x][y] > 0) {
