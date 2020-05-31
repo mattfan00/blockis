@@ -61,7 +61,7 @@ module.exports = (io) => {
           // foundRoom.gameStarted = false
           const winner = stillPlaying[0]
           io.to(roomId).emit('wholeGameOver', winner)
-          startCountdown()
+          startCountdown(roomId)
         }
 
         foundRoom.save()
@@ -88,12 +88,17 @@ module.exports = (io) => {
   })
 }
 
-function startCountdown() {
+function startCountdown(roomId) {
   var count = 5
   var intervalId = setInterval(() => {
-    console.log(count--)
+    io.to(roomId).emit('countdown', count)
+    count--
     if (count < 0) {
       clearInterval(intervalId)
+      setTimeout(() => {
+        io.to(roomId).emit('startGame')
+      }, 1000)
     }
   }, 1000)
+  
 }

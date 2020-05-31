@@ -13,7 +13,8 @@ const app = express()
       server = http.createServer(app)
       io = socketio(server)
 
-const userRoutes = require('./routes/user')
+const indexRoutes = require('./routes/index')
+      userRoutes = require('./routes/user')
       roomRoutes = require('./routes/room')
       ioRoutes = require('./routes/socket')(io)
 
@@ -45,16 +46,11 @@ app.use(function(req, res, next) {
   next()
 })
 
-
+app.use(indexRoutes)
 app.use(userRoutes)
 app.use(roomRoutes)
 ioRoutes
 
-app.get('/', (req, res) => {
-  Room.find({}, (err, foundRooms) => {
-    res.render('index', {rooms:foundRooms})
-  })
-})
 
 
 

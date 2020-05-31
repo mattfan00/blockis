@@ -8,11 +8,10 @@
   <body>
     <%- include('templates/navBar.ejs') %>
 
-    <div>
-      <a href='/game'>Play</a>
-    </div>
-    <div>
-      <a href='/custom'>Browse custom games</a>
-    </div>
+    <% for (room of rooms) { %>
+      <div>
+        <a href='/game/<%= room.id %>'><%= room.name %></a>
+      </div>
+    <% } %>
   </body>
 </html>

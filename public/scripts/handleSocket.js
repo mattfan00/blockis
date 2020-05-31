@@ -25,6 +25,8 @@ socket.on('getOtherPlayers', (users) => {
 })
 
 socket.on('startGame', () => {
+  const countdownArea = document.querySelector('.countdown')
+  countdownArea.innerHTML = ''
   board.reset()
   board.draw()
   time = { start: performance.now(), elapsed: 0, buffer: 750 }
@@ -112,7 +114,10 @@ socket.on('wholeGameOver', (winner) => {
   cancelAnimationFrame(animationId)
 })
 
-socket.on('countdown')
+socket.on('countdown', (count) => {
+  const countdownArea = document.querySelector('.countdown')
+  countdownArea.innerHTML = `Next game starts in ${count}...`
+})
 
 
 socket.on('message', (msg) => {
