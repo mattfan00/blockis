@@ -10,7 +10,11 @@ var RoomSchema = new mongoose.Schema({
     {
       _id: false,
       username: String,
-      socketId: String
+      socketId: String,
+      gameOver: {
+        type: Boolean,
+        default: false
+      }
     }
   ]
 })

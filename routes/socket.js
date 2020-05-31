@@ -37,6 +37,30 @@ module.exports = (io) => {
       socket.to(roomId).broadcast.emit('draw', drawDetails)
     })
 
+    socket.on('playerGameOver', (details) => [
+      Room.findById(roomId, (err, foundRoom) => {
+        var newUsers = foundRoom.users.map(user => {
+          if (user.socketId == details.socketId) {
+            return {...user.toObject(), gameOver: true}
+          } else {
+            return user
+          }
+        })
+        foundRoom.users = newUsers 
+        foundRoom.save()
+
+        socket.to(roomId).broadcast.emit('playerGameOver', {
+          socketId: details.socketId
+        })
+
+        var stillPlaying = foundRoom.users.filter(user => !user.gameOver)
+        if (stillPlaying.length <= 1) {
+          const winner = stillPlaying[0]
+          io.to(roomId).emit('wholeGameOver', winner)
+        }
+      })
+    ])
+
     // Send message to everyone that a user has left the chat 
     socket.on('disconnect', () => {
       console.log(roomId)

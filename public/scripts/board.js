@@ -38,7 +38,6 @@ class Board {
   draw() {
     // this.ghost = Object.create(this.piece) // copy piece
     this.ghost = Object.assign(Object.create(Object.getPrototypeOf(this.piece)), this.piece) // copy piece
-    console.log(this.ghost)
     this.ghost.makeGhost()
     while (this.valid(KEY.DOWN, this.ghost)) {
       this.ghost.move(KEY.DOWN)

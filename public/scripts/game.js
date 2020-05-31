@@ -4,7 +4,11 @@ const ctx = canvas.getContext('2d');
 const canvasNext = document.getElementById('next')
 const ctxNext = canvasNext.getContext('2d');
 
+var animationId, gameStarted
+
 let board = new Board(ctx, ctxNext)
+
+addEventListener()
 
 function play() {
   socket.emit('startGame')
@@ -13,8 +17,17 @@ function play() {
 socket.on('startGame', () => {
   board.reset()
   board.draw()
-  addEventListener()
   time = { start: performance.now(), elapsed: 0, buffer: 750 }
+
+  socket.emit('draw', {
+    username,
+    socketId: socket.id,
+    grid: board.grid,
+    piece: board.piece,
+    ghost: board.ghost
+  })
+
+  gameStarted = true
   
   animate()
 })
@@ -56,11 +69,44 @@ socket.on('draw', (drawDetails) => {
   }
 })
 
+socket.on('playerGameOver', (details) => {
+  const canvasPlayer = document.querySelector('.board-' + details.socketId)
+  const ctxPlayer = canvasPlayer.getContext('2d')
+
+  ctxPlayer.clearRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height);
+
+  ctxPlayer.fillStyle = 'red'
+  ctxPlayer.fillRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height)
+})
+
+socket.on('wholeGameOver', (winner) => {
+  gameStarted = false
+
+  if (winner.socketId == socket.id) {
+    console.log('i am the winner')
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    ctx.fillStyle = 'green'
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+  } else {
+    const canvasPlayer = document.querySelector('.board-' + winner.socketId)
+    const ctxPlayer = canvasPlayer.getContext('2d')
+
+    ctxPlayer.clearRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height);
+
+    ctxPlayer.fillStyle = 'green'
+    ctxPlayer.fillRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height)
+  }
+
+  cancelAnimationFrame(animationId)
+})
+
 function animate(now = 0) {
   time.elapsed = now - time.start;
   if (time.elapsed > time.buffer) {
     time.start = now;
     if (!board.drop()) {
+      gameOver()
       return
     }
   }
@@ -69,12 +115,16 @@ function animate(now = 0) {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
   board.draw()
-  requestAnimationFrame(animate)
+  animationId = requestAnimationFrame(animate)
 }
 
 function addEventListener() {
   document.addEventListener('keydown', e => {
     e.preventDefault()
+
+    if (!gameStarted) {
+      return
+    }
   
     if (e.keyCode == KEY.DROP) {
       while (board.valid(KEY.DOWN)) {
@@ -102,6 +152,22 @@ function addEventListener() {
       piece: board.piece,
       ghost: board.ghost
     })
+  })
+}
+
+function gameOver() {
+  // document.removeEventListener('keydown', () => {
+  //   socket.emit('playerGameOver', {
+  //     socketId: socket.id
+  //   })
+  // })
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+  ctx.fillStyle = 'red'
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+  socket.emit('playerGameOver', {
+    socketId: socket.id
   })
 }
 
