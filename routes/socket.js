@@ -17,7 +17,7 @@ module.exports = (io) => {
         console.log(foundRoom)
 
         socket.join(roomId)
-
+ 
         // Send message to the user that just joined the chat 
         socket.emit('message', 'Welcome to the room')
 
@@ -30,6 +30,11 @@ module.exports = (io) => {
     })
 
     socket.on('startGame', () => {
+      // Room.findById(roomId, (err, foundRoom) => {
+      //   foundRoom.gameStarted = true
+      //   foundRoom.save() 
+      //   io.to(roomId).emit('startGame')
+      // })
       io.to(roomId).emit('startGame')
     })
 
@@ -47,17 +52,19 @@ module.exports = (io) => {
           }
         })
         foundRoom.users = newUsers 
-        foundRoom.save()
-
         socket.to(roomId).broadcast.emit('playerGameOver', {
           socketId: details.socketId
         })
 
         var stillPlaying = foundRoom.users.filter(user => !user.gameOver)
         if (stillPlaying.length <= 1) {
+          // foundRoom.gameStarted = false
           const winner = stillPlaying[0]
           io.to(roomId).emit('wholeGameOver', winner)
+          startCountdown()
         }
+
+        foundRoom.save()
       })
     ])
 
@@ -79,4 +86,14 @@ module.exports = (io) => {
       })
     })
   })
+}
+
+function startCountdown() {
+  var count = 5
+  var intervalId = setInterval(() => {
+    console.log(count--)
+    if (count < 0) {
+      clearInterval(intervalId)
+    }
+  }, 1000)
 }
