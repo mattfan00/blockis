@@ -2,10 +2,10 @@ const mongoose = require('mongoose')
 
 var RoomSchema = new mongoose.Schema({
   name: String,
-  custom: {
-    type: Boolean,
-    default: false
-  },
+  // custom: {
+  //   type: Boolean,
+  //   default: false
+  // },
   users: [
     {
       _id: false,

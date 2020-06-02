@@ -4,8 +4,17 @@ const express = require('express')
 
 
 router.get('/game', (req, res) => {
-  console.log(req.user)
-  res.render('game')
+  Room.find({}, (err, foundRooms) => {
+    if (foundRooms.length == 0) {
+      Room.create({name: 'default'}, (err, newRoom) => {
+        console.log(newRoom)
+        res.redirect('/game/' + newRoom.id)
+      })
+    } else {
+      console.log(foundRooms)
+      res.redirect('/game/' + foundRooms[0].id)
+    }
+  })
 })
 
 router.get('/game/new', (req, res) => {
@@ -19,8 +28,8 @@ router.get('/game/:id', (req, res) => {
 router.post('/game', async (req, res) => {
   try {
     const { name } = req.body
-    let newChat = await Room.create({name})
-    if (!newChat) throw Error('Error creating room')
+    let newRoom = await Room.create({name})
+    if (!newRoom) throw Error('Error creating room')
 
     res.redirect('/')
   } catch(err) {
