@@ -24,6 +24,11 @@ module.exports = (io) => {
         // Send the list of the other users
         io.to(roomId).emit('getOtherPlayers', foundRoom.users)
 
+        // If there is only one user in the room, start game immediately
+        if (foundRoom.users.length == 1) {
+          startCountdown(roomId)
+        }
+
         // // Send message to the whole lobby except the user that joined
         // socket.to(roomId).broadcast.emit('message', msg.username + ' has joined the room')
       })
@@ -57,12 +62,17 @@ module.exports = (io) => {
         })
 
         var stillPlaying = foundRoom.users.filter(user => !user.gameOver)
-        if (stillPlaying.length <= 1) {
+        var winner 
+        if (stillPlaying.length == 1) {
           // foundRoom.gameStarted = false
-          const winner = stillPlaying[0]
-          io.to(roomId).emit('wholeGameOver', winner)
-          startCountdown(roomId)
+          winner = stillPlaying[0]
+          
+        } else if (stillPlaying.length == 0) {
+          winner = foundRoom.users[0]
         }
+
+        io.to(roomId).emit('wholeGameOver', winner)
+        startCountdown(roomId)
 
         foundRoom.save()
       })
