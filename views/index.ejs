@@ -1,18 +1,47 @@
 <!DOCTYPE html>
 <html>
   <head>
-
-    <link rel='stylesheet' href="/stylesheets/index.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <%- include('templates/standard.ejs') %>
+    <link rel="stylesheet" href="/stylesheets/home.css">
   </head>
   <body>
-    <%- include('templates/navBar.ejs') %>
+    <nav class='top-nav'>
+      <div class='left'>
 
-    <div>
+      </div>
+      <div class='right'>
+        <% if (currentUser) { %>
+          <a class="nav-item"><%= currentUser.username %></a>
+        <% } else { %>
+          <a href='/login' class='nav-item'>
+            Login
+          </a>
+          <a href='/register' class='nav-item'>
+            Register
+          </a>
+        <% } %>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="content">
+        <h1>blockis</h1>
+        <div>an online battle royale Tetris clone</div>
+
+        <div class="menu">
+          <a href="/game" class="menu-item"><h2>play</h2></a>
+          <a href="/custom" class="menu-item"><h2>browse games</h2></a>
+          <a href="/" class="menu-item"><h2>settings</h2></a>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- <div>
       <a href='/game'>Play</a>
     </div>
     <div>
       <a href='/custom'>Browse server list</a>
-    </div>
+    </div> -->
   </body>
 </html>

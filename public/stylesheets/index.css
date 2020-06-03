@@ -1,6 +1,22 @@
+:root {
+  --background-color: #222831;
+  --font-color: #ffffff;
+  --header-color: #FFC961;
+}
+
 body {
   margin: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
+  background-color: var(--background-color);
+  color: #ffffff;
+}
+
+h1, h2, h3 {
+  font-family: 'Maven Pro', sans-serif !important;
+}
+
+h1 {
+  color: var(--header-color);
 }
 
 .top-nav {
@@ -17,10 +33,12 @@ body {
 }
 
 .nav-item {
+  color: inherit;
   height: inherit;
   margin: 0 15px;
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: inherit;
 }
+
+ 

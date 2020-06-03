@@ -26,7 +26,7 @@ module.exports = (io) => {
 
         // If there is only one user in the room, start game immediately
         if (foundRoom.users.length == 1) {
-          startCountdown(roomId)
+          startCountdown(socket, roomId)
         }
 
         // // Send message to the whole lobby except the user that joined
@@ -72,7 +72,7 @@ module.exports = (io) => {
         }
 
         io.to(roomId).emit('wholeGameOver', winner)
-        startCountdown(roomId)
+        startCountdown(socket, roomId)
 
         foundRoom.save()
       })
@@ -80,7 +80,6 @@ module.exports = (io) => {
 
     // Send message to everyone that a user has left the chat 
     socket.on('disconnect', () => {
-      console.log(roomId)
       Room.findById(roomId, (err, foundRoom) => {
         var newUsers = foundRoom.users.filter(user => user.socketId != socket.id)
 
@@ -98,7 +97,7 @@ module.exports = (io) => {
   })
 }
 
-function startCountdown(roomId) {
+function startCountdown(socket, roomId) {
   var count = 5
   var intervalId = setInterval(() => {
     io.to(roomId).emit('countdown', count)
@@ -110,5 +109,9 @@ function startCountdown(roomId) {
       }, 1000)
     }
   }, 1000)
-  
+
+  socket.on('disconnect', () => {
+    clearInterval(intervalId)
+  })
+
 }
