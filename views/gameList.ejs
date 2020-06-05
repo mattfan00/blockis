@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('templates/standard.ejs') %>
+    <link rel="stylesheet" href="/stylesheets/gameList.css">
+  </head>
+  <body>
+    <%- include('templates/navBar.ejs') %>
+
+    <div class="main"> 
+      <div class="header">
+        <h1>browse games</h1>
+        <div>choose a game to join or create your own</div>
+      </div>
+      <table>
+        <% for (room of rooms) { %>
+          <tr onclick="window.location='/game/<%= room.id %>'">
+            <td><%= room.name %></td>
+            <td>Battle Royale</td>
+            <td><%= room.users.length %>/7</td>
+            <td>Private</td>
+          </tr>
+        <% } %>
+      </table>
+    </div>
+  </body>
+</html>

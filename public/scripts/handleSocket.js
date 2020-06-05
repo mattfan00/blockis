@@ -2,7 +2,7 @@ const socket = io()
 
 const roomId = window.location.pathname.split('/')[2]
 
-const username = generateName()
+console.log(registeredUser)
 
 socket.emit('joinRoom', {username, roomId})
 

@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 
 router.get('/custom', (req, res) => {
   Room.find({}, (err, foundRooms) => {
-    res.render('serverList', {rooms:foundRooms})
+    res.render('gameList', {rooms:foundRooms})
   })
 })
 
