@@ -3,28 +3,44 @@ body {
 }
 
 .games {
-  display: flex;
-  justify-content: space-around;
+  /* display: flex;
+  justify-content: center; */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 100px;
 }
 
 .main-game {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.main-game-slot {
   display: flex;
   align-items: flex-start;
 }
 
 .main-game-board {
-  border: 10px solid #03719C;
-  border-top: none;
+  border: 1px solid #657080;
   margin-right: 20px;
+  background-color: #090808;
 }
 
 .main-game-next {
-  
+  border: 1px solid #657080;
+  background-color: #090808;
 }
 
 .players {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 100px);
+  grid-gap: 20px;
+}
+
+.players-temp {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
   grid-gap: 20px;
 }
 
@@ -34,5 +50,11 @@ body {
 }
 
 .board {
-  border: 1px solid black;
+  border: 1px solid #657080;
+  background-color: #090808;
+}
+
+.countdown {
+  margin-top: 30px;
+  text-align: center;
 }

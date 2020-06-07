@@ -11,17 +11,25 @@ socket.on('getOtherPlayers', (users) => {
   const players = document.querySelector('.players')
   players.innerHTML = ''
 
-  var users = users.filter(user => user.socketId != socket.id)
-  users.forEach(user => {
-    var div = document.createElement('div')
-    div.innerHTML = `
-      <div class="player-slot">
-        <div>${user.username}</div>
-        <canvas class="board board-${user.socketId}" width="100" height="200"></canvas>
-      </div>
-    `
-    players.appendChild(div)
-  })
+  console.log(users)
+
+  if (users.length == 1) {
+    players.innerHTML = 'No other players'
+  } else {
+    var users = users.filter(user => user.socketId != socket.id)
+    users.forEach(user => {
+      var div = document.createElement('div')
+      div.innerHTML = `
+        <div class="player-slot">
+          <div>${user.username}</div>
+          <canvas class="board board-${user.socketId}" width="100" height="200"></canvas>
+        </div>
+      `
+      players.appendChild(div)
+    })
+  }
+
+  
 })
 
 socket.on('startGame', () => {
@@ -41,7 +49,7 @@ socket.on('startGame', () => {
 
   gameStarted = true
   
-  animate()
+  // animate()
 })
 
 socket.on('draw', (drawDetails) => {
