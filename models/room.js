@@ -6,6 +6,10 @@ var RoomSchema = new mongoose.Schema({
     type: Number,
     default: 7
   },
+  gameStarted: {
+    type: Boolean,
+    default: false
+  },
   users: [
     {
       _id: false,
@@ -15,6 +19,10 @@ var RoomSchema = new mongoose.Schema({
       gameOver: {
         type: Boolean,
         default: false
+      },
+      joinedGame: {
+        type: Boolean,
+        default: true
       }
     }
   ]

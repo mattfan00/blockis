@@ -129,11 +129,13 @@ socket.on('wholeGameOver', (users) => {
   // }
 
   const scoreboard = document.querySelector('.scoreboard')
+  console.log(users)
+  users = users.sort((a,b) => (a.place > b.place) || (!a.place) ? 1 : -1) 
   users.forEach(user => {
     var div = document.createElement('div')
     div.innerHTML = `
       <div>
-        ${user.username} - ${user.place}
+        ${user.place ? user.place + ' - ' : ''}${user.username} ${user.socketId == socket.id ? '(me)' : ''}
       </div>
     `
     scoreboard.appendChild(div)

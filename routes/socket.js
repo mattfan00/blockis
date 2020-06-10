@@ -9,7 +9,8 @@ module.exports = (io) => {
       Room.findById(roomId, (err, foundRoom) => {
         let newUser = {
           username: msg.username,
-          socketId: socket.id
+          socketId: socket.id,
+          joinedGame: !foundRoom.gameStarted
         }
         foundRoom.users.push(newUser)
         foundRoom.save()
@@ -32,18 +33,6 @@ module.exports = (io) => {
       })
     })
 
-    socket.on('startGame', () => {
-      // Room.findById(roomId, (err, foundRoom) => {
-      //   let newUsers = newUsers.map(user => {
-      //     return {...user.toObject(), gameOver: false, place: null}
-      //   })
-      //   foundRoom.users = newUsers
-      //   foundRoom.save() 
-      //   io.to(roomId).emit('startGame')
-      // })
-      io.to(roomId).emit('startGame')
-    })
-
     socket.on('draw', (drawDetails) => {
       socket.to(roomId).broadcast.emit('draw', drawDetails)
     })
@@ -51,7 +40,7 @@ module.exports = (io) => {
     socket.on('playerGameOver', (details) => {
       Room.findById(roomId, (err, foundRoom) => {
         // handle the case that its just one player in the game
-        if (foundRoom.users.length == 1) { 
+        if (foundRoom.users.filter(user => user.joinedGame).length == 1) { 
           let newUsers = foundRoom.users.map(user => {
             if (user.socketId == details.socketId) {
               return {...user.toObject(), gameOver: true, place: 1}
@@ -59,7 +48,10 @@ module.exports = (io) => {
               return user.toObject()
             }
           })
+
+          // trigger whole game over 
           foundRoom.users = newUsers
+          foundRoom.gameStarted = false
           foundRoom.save()
           io.to(roomId).emit('wholeGameOver', newUsers)
           startCountdown(socket, roomId)
@@ -68,7 +60,7 @@ module.exports = (io) => {
             socketId: details.socketId
           }) 
 
-          let numStillPlaying = foundRoom.users.filter(user => !user.gameOver).length
+          let numStillPlaying = foundRoom.users.filter(user => !user.gameOver && user.joinedGame).length
           let newUsers = foundRoom.users.map(user => {
             if (user.socketId == details.socketId) {
               return {...user.toObject(), gameOver: true, place: numStillPlaying}
@@ -80,16 +72,19 @@ module.exports = (io) => {
           // signal whole game over when game over for 1 out of the 2 remaining 
           if (numStillPlaying == 2) { 
             newUsers = newUsers.map(user => {
-              if (!user.place) {
+              if (!user.place && user.joinedGame) {
                 return {...user, gameOver: true, place: 1}
               } else {
                 return user
               }
             })
+
+            // trigger whole game over
+            foundRoom.gameStarted = false
             io.to(roomId).emit('wholeGameOver', newUsers)
             startCountdown(socket, roomId)
             newUsers = newUsers.map(user => {
-              return {...user, gameOver: false, place: null}
+              return {...user, gameOver: false, place: null, joinedGame: true}
             })
           }
           foundRoom.users = newUsers
@@ -102,8 +97,8 @@ module.exports = (io) => {
     socket.on('disconnect', () => {
       Room.findById(roomId, (err, foundRoom) => {
         let newUsers = foundRoom.users.filter(user => user.socketId != socket.id)
-
         foundRoom.users = newUsers
+        foundRoom.gameStarted = !(newUsers.length == 0)
         foundRoom.save()
 
         // Send the list of the other users
@@ -123,7 +118,10 @@ function startCountdown(socket, roomId) {
     if (count < 0) {
       clearInterval(intervalId)
       setTimeout(() => {
-        io.to(roomId).emit('startGame')
+        Room.findByIdAndUpdate(roomId, {gameStarted: true}, {new: true}, (err, updatedRoom) => {
+          console.log(updatedRoom)
+          io.to(roomId).emit('startGame')
+        })
       }, 1000)
     }
   }, 1000)
