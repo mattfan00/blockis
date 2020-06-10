@@ -7,11 +7,9 @@ router.get('/game', (req, res) => {
   Room.find({}, (err, foundRooms) => {
     if (foundRooms.length == 0) {
       Room.create({name: 'default'}, (err, newRoom) => {
-        console.log(newRoom)
         res.redirect('/game/' + newRoom.id)
       })
     } else {
-      console.log(foundRooms)
       res.redirect('/game/' + foundRooms[0].id)
     }
   })

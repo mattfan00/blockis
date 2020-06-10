@@ -35,6 +35,8 @@ socket.on('getOtherPlayers', (users) => {
 socket.on('startGame', () => {
   const countdownArea = document.querySelector('.countdown')
   countdownArea.innerHTML = ''
+  const scoreboard = document.querySelector('.scoreboard')
+  scoreboard.innerHTML = ''
   board.reset()
   board.draw()
   time = { start: performance.now(), elapsed: 0, buffer: 750 }
@@ -49,7 +51,7 @@ socket.on('startGame', () => {
 
   gameStarted = true
   
-  // animate()
+  animate()
 })
 
 socket.on('draw', (drawDetails) => {
@@ -90,6 +92,12 @@ socket.on('draw', (drawDetails) => {
 })
 
 socket.on('playerGameOver', (details) => {
+  // // goes into if statment when this player is the last player standing and triggers wholeGameOver
+  // if (details.numRemaining == 1) {
+  //   socket.emit('playerGameOver', {
+  //     socketId: socket.id
+  //   })
+  // } 
   const canvasPlayer = document.querySelector('.board-' + details.socketId)
   const ctxPlayer = canvasPlayer.getContext('2d')
 
@@ -97,27 +105,39 @@ socket.on('playerGameOver', (details) => {
 
   ctxPlayer.fillStyle = 'red'
   ctxPlayer.fillRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height)
+  
 })
 
-socket.on('wholeGameOver', (winner) => {
+socket.on('wholeGameOver', (users) => {
   gameStarted = false
 
-  if (winner.socketId == socket.id) {
-    console.log('i am the winner')
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    ctxNext.clearRect(0, 0, ctxNext.canvas.width, ctxNext.canvas.height)
+  // if (winner.socketId == socket.id) {
+  //   console.log('i am the winner')
+  //   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+  //   ctxNext.clearRect(0, 0, ctxNext.canvas.width, ctxNext.canvas.height)
 
-    ctx.fillStyle = 'green'
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-  } else {
-    const canvasPlayer = document.querySelector('.board-' + winner.socketId)
-    const ctxPlayer = canvasPlayer.getContext('2d')
+  //   ctx.fillStyle = 'green'
+  //   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+  // } else {
+  //   const canvasPlayer = document.querySelector('.board-' + winner.socketId)
+  //   const ctxPlayer = canvasPlayer.getContext('2d')
 
-    ctxPlayer.clearRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height);
+  //   ctxPlayer.clearRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height);
 
-    ctxPlayer.fillStyle = 'green'
-    ctxPlayer.fillRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height)
-  }
+  //   ctxPlayer.fillStyle = 'green'
+  //   ctxPlayer.fillRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height)
+  // }
+
+  const scoreboard = document.querySelector('.scoreboard')
+  users.forEach(user => {
+    var div = document.createElement('div')
+    div.innerHTML = `
+      <div>
+        ${user.username} - ${user.place}
+      </div>
+    `
+    scoreboard.appendChild(div)
+  })
 
   cancelAnimationFrame(animationId)
 })

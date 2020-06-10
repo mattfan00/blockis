@@ -2,19 +2,17 @@ const Room = require('../models/room')
 
 module.exports = (io) => {
   io.on('connection', (socket) => {    
-    var roomId
+    let roomId
     
     socket.on('joinRoom', (msg) => {
       roomId = msg.roomId
-      console.log(roomId)
       Room.findById(roomId, (err, foundRoom) => {
-        var newUser = {
+        let newUser = {
           username: msg.username,
           socketId: socket.id
         }
         foundRoom.users.push(newUser)
         foundRoom.save()
-        console.log(foundRoom)
 
         socket.join(roomId)
  
@@ -36,7 +34,10 @@ module.exports = (io) => {
 
     socket.on('startGame', () => {
       // Room.findById(roomId, (err, foundRoom) => {
-      //   foundRoom.gameStarted = true
+      //   let newUsers = newUsers.map(user => {
+      //     return {...user.toObject(), gameOver: false, place: null}
+      //   })
+      //   foundRoom.users = newUsers
       //   foundRoom.save() 
       //   io.to(roomId).emit('startGame')
       // })
@@ -47,46 +48,63 @@ module.exports = (io) => {
       socket.to(roomId).broadcast.emit('draw', drawDetails)
     })
 
-    socket.on('playerGameOver', (details) => [
+    socket.on('playerGameOver', (details) => {
       Room.findById(roomId, (err, foundRoom) => {
-        var newUsers = foundRoom.users.map(user => {
-          if (user.socketId == details.socketId) {
-            return {...user.toObject(), gameOver: true}
-          } else {
-            return user
+        // handle the case that its just one player in the game
+        if (foundRoom.users.length == 1) { 
+          let newUsers = foundRoom.users.map(user => {
+            if (user.socketId == details.socketId) {
+              return {...user.toObject(), gameOver: true, place: 1}
+            } else {
+              return user.toObject()
+            }
+          })
+          foundRoom.users = newUsers
+          foundRoom.save()
+          io.to(roomId).emit('wholeGameOver', newUsers)
+          startCountdown(socket, roomId)
+        } else {
+          socket.to(roomId).broadcast.emit('playerGameOver', {
+            socketId: details.socketId
+          }) 
+
+          let numStillPlaying = foundRoom.users.filter(user => !user.gameOver).length
+          let newUsers = foundRoom.users.map(user => {
+            if (user.socketId == details.socketId) {
+              return {...user.toObject(), gameOver: true, place: numStillPlaying}
+            } else {
+              return user.toObject()
+            }
+          })
+
+          // signal whole game over when game over for 1 out of the 2 remaining 
+          if (numStillPlaying == 2) { 
+            newUsers = newUsers.map(user => {
+              if (!user.place) {
+                return {...user, gameOver: true, place: 1}
+              } else {
+                return user
+              }
+            })
+            io.to(roomId).emit('wholeGameOver', newUsers)
+            startCountdown(socket, roomId)
+            newUsers = newUsers.map(user => {
+              return {...user, gameOver: false, place: null}
+            })
           }
-        })
-        foundRoom.users = newUsers 
-        socket.to(roomId).broadcast.emit('playerGameOver', {
-          socketId: details.socketId
-        })
-
-        var stillPlaying = foundRoom.users.filter(user => !user.gameOver)
-        var winner 
-        if (stillPlaying.length == 1) {
-          // foundRoom.gameStarted = false
-          winner = stillPlaying[0]
-          
-        } else if (stillPlaying.length == 0) {
-          winner = foundRoom.users[0]
+          foundRoom.users = newUsers
+          foundRoom.save()
         }
-
-        io.to(roomId).emit('wholeGameOver', winner)
-        startCountdown(socket, roomId)
-
-        foundRoom.save()
       })
-    ])
+    })
 
     // Send message to everyone that a user has left the chat 
     socket.on('disconnect', () => {
       Room.findById(roomId, (err, foundRoom) => {
-        var newUsers = foundRoom.users.filter(user => user.socketId != socket.id)
+        let newUsers = foundRoom.users.filter(user => user.socketId != socket.id)
 
         foundRoom.users = newUsers
         foundRoom.save()
-        
-        console.log(foundRoom)
 
         // Send the list of the other users
         io.to(roomId).emit('getOtherPlayers', foundRoom.users)
@@ -98,8 +116,8 @@ module.exports = (io) => {
 }
 
 function startCountdown(socket, roomId) {
-  var count = 5
-  var intervalId = setInterval(() => {
+  let count = 5
+  let intervalId = setInterval(() => {
     io.to(roomId).emit('countdown', count)
     count--
     if (count < 0) {
