@@ -10,8 +10,20 @@ socket.on('getOtherPlayers', (users) => {
   // Add in the other players
   const players = document.querySelector('.players')
   players.innerHTML = ''
+  // document.querySelector('.scoreboard').classList.remove('hide')
 
-  console.log(users)
+  const scoreboard = document.querySelector('.scoreboard-content')
+  scoreboard.innerHTML = ''
+  users = users.sort((a,b) => (a.place > b.place) || (!a.place) ? 1 : -1) 
+  users.forEach(user => {
+    var div = document.createElement('div')
+    div.innerHTML = `
+      <div ${user.socketId == socket.id ? "class='active'" : ""}>
+        ${user.place ? user.place + ' - ' : ''}${user.username}
+      </div>
+    `
+    scoreboard.appendChild(div)
+  })
 
   if (users.length == 1) {
     players.innerHTML = 'No other players'
@@ -33,10 +45,11 @@ socket.on('getOtherPlayers', (users) => {
 })
 
 socket.on('startGame', () => {
-  const countdownArea = document.querySelector('.countdown')
-  countdownArea.innerHTML = ''
-  const scoreboard = document.querySelector('.scoreboard')
-  scoreboard.innerHTML = ''
+  document.querySelector('.countdown').innerHTML = ''
+  document.querySelector('.scoreboard').classList.add('hide')
+  document.querySelector('.scoreboard-content').innerHTML = ''
+  document.querySelector('.games').classList.remove('blur')
+
   board.reset()
   board.draw()
   time = { start: performance.now(), elapsed: 0, buffer: 750 }
@@ -138,6 +151,9 @@ socket.on('playerGameOver', (details) => {
 socket.on('wholeGameOver', (details) => {
   gameStarted = false
 
+  document.querySelector('.games').classList.add('blur')
+
+
   if (details.winner.socketId == socket.id) {
     console.log('i am the winner')
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
@@ -159,17 +175,19 @@ socket.on('wholeGameOver', (details) => {
     ctxPlayer.fillText('1st',  ctxPlayer.canvas.width/2, ctxPlayer.canvas.height/2);
   }
 
-  const scoreboard = document.querySelector('.scoreboard')
+  const scoreboard = document.querySelector('.scoreboard-content')
   users = details.users.sort((a,b) => (a.place > b.place) || (!a.place) ? 1 : -1) 
   users.forEach(user => {
     var div = document.createElement('div')
     div.innerHTML = `
-      <div>
-        ${user.place ? user.place + ' - ' : ''}${user.username} ${user.socketId == socket.id ? '(me)' : ''}
+      <div ${user.socketId == socket.id ? "class='active'" : ""}>
+        ${user.place ? user.place + ' - ' : ''}${user.username}
       </div>
     `
     scoreboard.appendChild(div)
   })
+
+  document.querySelector('.scoreboard').classList.remove('hide')
 
   cancelAnimationFrame(animationId)
 })

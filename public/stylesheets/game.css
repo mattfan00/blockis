@@ -2,12 +2,49 @@ body {
   /* background-color: #252525; */
 }
 
+.main {
+  position: relative;
+}
+
+.scoreboard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background-color: black;
+  min-width: 400px;
+  height: 300px;
+  transition: 0.3s;
+}
+
+.scoreboard-header {
+  text-align: center;
+}
+
+.scoreboard-content div {
+  text-align: center;
+}
+
+.scoreboard-content .active {
+  background-color: #6b6b6b;
+}
+
 .games {
   /* display: flex;
   justify-content: center; */
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 100px;
+  transition: 0.5s
+}
+
+.blur {
+  opacity: 0.25;
+}
+
+.hide {
+  opacity: 0 !important;
 }
 
 .main-game {

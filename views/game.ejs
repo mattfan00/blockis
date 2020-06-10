@@ -7,24 +7,33 @@
 </head>
 <body>
   <%- include('templates/navBar.ejs') %>
-  <div class='games'>
-    <div class='main-game'>
-      <div class='main-game-slot'>
-        <canvas id="board" class="main-game-board"></canvas>
-        <canvas id="next" class="main-game-next"></canvas>
+  <div class='main'>
+    <div class='scoreboard'>
+      <div class='scoreboard-header'>
+        <h2>Room name</h2>
+      </div>
+      <div class='scoreboard-content'>
+
       </div>
     </div>
-    <div class="players">
-
+    <div class='games blur'>
+      <div class='main-game'>
+        <div class='main-game-slot'>
+          <canvas id="board" class="main-game-board"></canvas>
+          <canvas id="next" class="main-game-next"></canvas>
+        </div>
+      </div>
+      <div class="players">
+  
+      </div>
     </div>
   </div>
+  
   <!-- <button onclick="play()" class="play-button">Play</button> -->
   <h3 class='countdown'>
 
   </h3>
-  <div class='scoreboard'>
-    
-  </div>
+  
 
 
 
