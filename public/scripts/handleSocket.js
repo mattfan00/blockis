@@ -98,39 +98,69 @@ socket.on('playerGameOver', (details) => {
   //     socketId: socket.id
   //   })
   // } 
-  const canvasPlayer = document.querySelector('.board-' + details.socketId)
+
+  console.log(details.socketId == socket.id)
+
+  const canvasPlayer = (details.socketId == socket.id) ? document.getElementById('board') : document.querySelector('.board-' + details.socketId)
   const ctxPlayer = canvasPlayer.getContext('2d')
 
   ctxPlayer.clearRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height);
 
-  ctxPlayer.fillStyle = 'red'
-  ctxPlayer.fillRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height)
-  
+  ctxPlayer.fillStyle = 'white'
+  ctxPlayer.textAlign = 'center'
+
+  let text
+  switch (details.place % 10) {
+    case 1: 
+      text = details.place + 'st'
+      break
+    case 2: 
+      text = details.place + 'nd'
+      break
+    case 3: 
+      text = details.place + 'rd'
+      break
+    default: 
+      text = details.place + 'th'
+      break
+  }
+
+  // need to accomodate for different scaling for the main board
+  if (details.socketId == socket.id) {
+    ctxPlayer.font = 'bold 2px ubuntu'
+    ctxPlayer.fillText(text,  (ctxPlayer.canvas.width/2)/BLOCK_SIZE, (ctxPlayer.canvas.height/2)/BLOCK_SIZE );
+  } else {
+    ctxPlayer.font = 'bold 18px ubuntu'
+    ctxPlayer.fillText(text,  ctxPlayer.canvas.width/2, ctxPlayer.canvas.height/2);
+  }
 })
 
-socket.on('wholeGameOver', (users) => {
+socket.on('wholeGameOver', (details) => {
   gameStarted = false
 
-  // if (winner.socketId == socket.id) {
-  //   console.log('i am the winner')
-  //   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-  //   ctxNext.clearRect(0, 0, ctxNext.canvas.width, ctxNext.canvas.height)
+  if (details.winner.socketId == socket.id) {
+    console.log('i am the winner')
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    ctxNext.clearRect(0, 0, ctxNext.canvas.width, ctxNext.canvas.height)
 
-  //   ctx.fillStyle = 'green'
-  //   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-  // } else {
-  //   const canvasPlayer = document.querySelector('.board-' + winner.socketId)
-  //   const ctxPlayer = canvasPlayer.getContext('2d')
+    ctx.fillStyle = 'white'
+    ctx.textAlign = 'center'
+    ctx.font = 'bold 2px ubuntu'
+    ctx.fillText('1st',  (ctx.canvas.width/2)/BLOCK_SIZE, (ctx.canvas.height/2)/BLOCK_SIZE );
+  } else {
+    const canvasPlayer = document.querySelector('.board-' + details.winner.socketId)
+    const ctxPlayer = canvasPlayer.getContext('2d')
 
-  //   ctxPlayer.clearRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height);
+    ctxPlayer.clearRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height);
 
-  //   ctxPlayer.fillStyle = 'green'
-  //   ctxPlayer.fillRect(0, 0, ctxPlayer.canvas.width, ctxPlayer.canvas.height)
-  // }
+    ctxPlayer.fillStyle = 'white'
+    ctxPlayer.textAlign = 'center'
+    ctxPlayer.font = 'bold 18px ubuntu'
+    ctxPlayer.fillText('1st',  ctxPlayer.canvas.width/2, ctxPlayer.canvas.height/2);
+  }
 
   const scoreboard = document.querySelector('.scoreboard')
-  console.log(users)
-  users = users.sort((a,b) => (a.place > b.place) || (!a.place) ? 1 : -1) 
+  users = details.users.sort((a,b) => (a.place > b.place) || (!a.place) ? 1 : -1) 
   users.forEach(user => {
     var div = document.createElement('div')
     div.innerHTML = `

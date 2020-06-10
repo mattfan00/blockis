@@ -74,11 +74,11 @@ function gameOver() {
   //     socketId: socket.id
   //   })
   // })
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-  ctxNext.clearRect(0, 0, ctxNext.canvas.width, ctxNext.canvas.height)
+  // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+  // ctxNext.clearRect(0, 0, ctxNext.canvas.width, ctxNext.canvas.height)
 
-  ctx.fillStyle = 'red'
-  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+  // ctx.fillStyle = 'red'
+  // ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
   socket.emit('playerGameOver', {
     socketId: socket.id

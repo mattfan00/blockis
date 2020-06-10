@@ -40,10 +40,12 @@ module.exports = (io) => {
     socket.on('playerGameOver', (details) => {
       Room.findById(roomId, (err, foundRoom) => {
         // handle the case that its just one player in the game
+        let winner
         if (foundRoom.users.filter(user => user.joinedGame).length == 1) { 
           let newUsers = foundRoom.users.map(user => {
             if (user.socketId == details.socketId) {
-              return {...user.toObject(), gameOver: true, place: 1}
+              winner = {...user.toObject(), gameOver: true, place: 1}
+              return winner
             } else {
               return user.toObject()
             }
@@ -53,14 +55,19 @@ module.exports = (io) => {
           foundRoom.users = newUsers
           foundRoom.gameStarted = false
           foundRoom.save()
-          io.to(roomId).emit('wholeGameOver', newUsers)
+          io.to(roomId).emit('wholeGameOver', {
+            users: newUsers,
+            winner
+          })
           startCountdown(socket, roomId)
         } else {
-          socket.to(roomId).broadcast.emit('playerGameOver', {
-            socketId: details.socketId
+          let numStillPlaying = foundRoom.users.filter(user => !user.gameOver && user.joinedGame).length
+
+          io.to(roomId).emit('playerGameOver', {
+            socketId: details.socketId,
+            place: numStillPlaying
           }) 
 
-          let numStillPlaying = foundRoom.users.filter(user => !user.gameOver && user.joinedGame).length
           let newUsers = foundRoom.users.map(user => {
             if (user.socketId == details.socketId) {
               return {...user.toObject(), gameOver: true, place: numStillPlaying}
@@ -73,7 +80,8 @@ module.exports = (io) => {
           if (numStillPlaying == 2) { 
             newUsers = newUsers.map(user => {
               if (!user.place && user.joinedGame) {
-                return {...user, gameOver: true, place: 1}
+                winner = {...user, gameOver: true, place: 1}
+                return winner
               } else {
                 return user
               }
@@ -81,7 +89,10 @@ module.exports = (io) => {
 
             // trigger whole game over
             foundRoom.gameStarted = false
-            io.to(roomId).emit('wholeGameOver', newUsers)
+            io.to(roomId).emit('wholeGameOver', {
+              users: newUsers,
+              winner
+            })
             startCountdown(socket, roomId)
             newUsers = newUsers.map(user => {
               return {...user, gameOver: false, place: null, joinedGame: true}
