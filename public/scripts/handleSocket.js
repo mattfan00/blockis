@@ -17,10 +17,10 @@ socket.on('getOtherPlayers', (users) => {
   users = users.sort((a,b) => (a.place > b.place) || (!a.place) ? 1 : -1) 
   users.forEach(user => {
     var div = document.createElement('div')
+    div.className = `scoreboard-content-slot ${(user.socketId == socket.id) ? 'active' : ''}` 
     div.innerHTML = `
-      <div ${user.socketId == socket.id ? "class='active'" : ""}>
-        ${user.place ? user.place + ' - ' : ''}${user.username}
-      </div>
+      <div>${user.place ? user.place : ''}</div>
+      <div>${user.username}</div>
     `
     scoreboard.appendChild(div)
   })
@@ -179,10 +179,10 @@ socket.on('wholeGameOver', (details) => {
   users = details.users.sort((a,b) => (a.place > b.place) || (!a.place) ? 1 : -1) 
   users.forEach(user => {
     var div = document.createElement('div')
+    div.className = `scoreboard-content-slot ${(user.socketId == socket.id) ? 'active' : ''}` 
     div.innerHTML = `
-      <div ${user.socketId == socket.id ? "class='active'" : ""}>
-        ${user.place ? user.place + ' - ' : ''}${user.username}
-      </div>
+      <div>${user.place ? user.place : ''}</div>
+      <div>${user.username}</div>
     `
     scoreboard.appendChild(div)
   })

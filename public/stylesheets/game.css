@@ -12,8 +12,10 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
-  background-color: black;
-  min-width: 400px;
+  background-color: #2B3449;
+  border-radius: 10px;
+  border: 1px solid black;
+  min-width: 300px;
   height: 300px;
   transition: 0.3s;
 }
@@ -22,12 +24,15 @@ body {
   text-align: center;
 }
 
-.scoreboard-content div {
-  text-align: center;
+.scoreboard-content-slot {
+  display: grid;
+  grid-template-columns: 30px auto;
+  grid-gap: 0 5px;
+  padding: 7px 15px;
 }
 
 .scoreboard-content .active {
-  background-color: #6b6b6b;
+  background-color: #3C4261;
 }
 
 .games {
@@ -40,7 +45,7 @@ body {
 }
 
 .blur {
-  opacity: 0.25;
+  opacity: 0.1;
 }
 
 .hide {
