@@ -3,6 +3,7 @@
   <head>
     <%- include('templates/standard.ejs') %>
     <link rel="stylesheet" href="/stylesheets/gameList.css">
+    <script src="/scripts/gameList.js"></script>
   </head>
   <body>
     <%- include('templates/navBar.ejs') %>
@@ -12,16 +13,22 @@
         <h1>browse games</h1>
         <div>choose a game to join or create your own</div>
       </div>
-      <table>
+      <div class="table">
         <% for (room of rooms) { %>
-          <tr onclick="window.location='/game/<%= room.id %>'">
-            <td><%= room.name %></td>
-            <td>Battle Royale</td>
-            <td><%= room.users.length %>/7</td>
-            <td>Private</td>
-          </tr>
+          <% if (room.password) { %>
+          <!-- <div class="row" onclick="handlePassword('<%= room.id %>')"> -->
+          <div class="row private-row" id="<%= room.id %>">
+          <% } else { %> 
+          <div class="row" onclick="window.location='/game/<%= room.id %>'">
+          <% } %>
+            <div class="col"><%= room.name %></div> 
+            <div class="col">Battle Royale</div>
+            <div class="col"><%= room.users.length %>/7</div>
+            <div class="col <%= (room.password) ? 'private-col' : '' %>" id="password-<%= room.id %>"><%= (room.password) ? 'Private' : '' %></div>
+            <!-- <div><input class='password-input'></div> -->
+          </div>
         <% } %>
-      </table>
+      </div>
     </div>
   </body>
 </html>

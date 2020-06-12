@@ -20,7 +20,9 @@ router.get('/game/new', (req, res) => {
 })
 
 router.get('/game/:id', (req, res) => {
-  res.render('game')
+  Room.findById(req.params.id, (err, foundRoom) => {
+    res.render('game', {room: foundRoom})
+  })
 })
 
 router.post('/game', async (req, res) => {

@@ -13,19 +13,31 @@ h1 {
   margin: 10px;
 }
 
-table {
+.table {
+  display: grid;
   margin-top: 50px;
   min-width: 600px;
   background-color: #2B3449;
-  border-collapse: collapse;
 }
 
-td {
-  text-align: center;
-  padding: 15px;
-}
-
-tr:hover {
-  background-color: #3C4261;
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* padding: 15px 0; */
+  height: 45px;
   cursor: pointer;
+}
+
+.col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.password-input {
+  width: 110px;
+  background-color: #29303c;
+  border: 1px solid #484747;
+  padding: 5px;
+  color: var(--font-color);
 }
