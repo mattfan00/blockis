@@ -37,4 +37,10 @@ router.post('/game', async (req, res) => {
   }
 })
 
+router.get("/api/game/:id", (req, res) => {
+  Room.findById(req.params.id, (err, foundRoom) => {
+    res.json(foundRoom)
+  })
+})
+
 module.exports = router

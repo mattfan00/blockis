@@ -20,14 +20,12 @@ window.onload = () => {
           }
         })
         let passwordSection = document.getElementById('password-' + currVisibleId)
-        
-        let input = document.createElement('input')
-        input.className = 'password-input'
-        input.type = 'password'
-        input.placeholder = 'Enter password...'
-        passwordSection.innerHTML = ''
-        passwordSection.appendChild(input)
-        input.focus()
+
+        passwordSection.innerHTML =`
+          <form onSubmit="handlePassword(event, '${currVisibleId}')">
+            <input class="password-input" type="password" placeholder="Enter password..." name="password" onkeypress="removeOutline(this)"> 
+          </form>
+        ` 
       }
       
     })
@@ -43,45 +41,28 @@ window.onload = () => {
     }
     
   })
-
-  // for (var i = 0; i < privateRows.length; i++) {
-  //   privateRows[i].addEventListener("click", function (e) {
-  //       // if (inputVisible === "" || privateRowIds.includes(e.currentTarget.id)) {
-  //       //   console.log(inputVisible)
-  //       //   console.log(e.currentTarget.id)
-  //       //   if (privateRowIds.includes(e.currentTarget.id) && inputVisible !== "" && inputVisible !== e.currentTarget.id) {
-  //       //     let visiblePrivateRow = document.getElementById(inputVisible)
-  //       //     document.getElementById("password-" + inputVisible).innerHTML = "Private"
-  //       //   }
-  //       //   inputVisible = e.currentTarget.id
-  //       //   let id = e.currentTarget.id
-  //       //   let passwordSection = document.getElementById('password-' + id)
-          
-  //       //   let input = document.createElement('input')
-  //       //   input.className = 'password-input'
-  //       //   input.type = 'password'
-  //       //   input.placeholder = 'Enter password...'
-  //       //   passwordSection.innerHTML = ''
-  //       //   passwordSection.appendChild(input)
-  //       // }
-  //       if (privateRowIds.includes(e.currentTarget.id)) {
-  //         // this means an input was already displayed so we should clear it 
-  //         if (inputVisible !== "" && inputVisible !== e.currentTarget.id) {
-  //           console.log('went to private')
-  //           let visiblePrivateRow = document.getElementById(inputVisible)
-  //           document.getElementById("password-" + inputVisible).innerHTML = "Private"
-  //         } 
-  //         inputVisible = e.currentTarget.id
-  //         let id = e.currentTarget.id
-  //         let passwordSection = document.getElementById('password-' + id)
-          
-  //         let input = document.createElement('input')
-  //         input.className = 'password-input'
-  //         input.type = 'password'
-  //         input.placeholder = 'Enter password...'
-  //         passwordSection.innerHTML = ''
-  //         passwordSection.appendChild(input)
-  //       }
-  //   });
-  // }
 }
+
+async function handlePassword(e, roomId) {
+  e.preventDefault()
+  let input = document.querySelector(".password-input")
+  let submittedPassword = input.value
+  
+  let correctPassword = await fetch("/api/game/" + roomId)
+    .then(res => res.json())
+    .then(data => data.password)
+
+  if (submittedPassword === correctPassword) {
+    window.location="/game/" + roomId
+  } else {
+    console.log('password incorrect')
+    input.select()
+    input.classList.add("password-incorrect")
+  }
+}
+
+function removeOutline(input) {
+  input.classList.remove("password-incorrect")
+}
+
+
