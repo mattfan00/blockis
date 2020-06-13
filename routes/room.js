@@ -26,23 +26,31 @@ router.get('/game', (req, res) => {
 })
 
 router.post('/game', (req, res) => {
-  Room.find({}, (err, foundRooms) => {
-    let username = req.body.username
-    console.log(username)
-    if (foundRooms.length == 0) {
-      Room.create({name: 'default'}, (err, newRoom) => {
+  let username = req.body.username
+  if (!req.body.roomId) {
+    Room.find({}, (err, foundRooms) => {
+      if (foundRooms.length == 0) {
+        Room.create({name: 'default'}, (err, newRoom) => {
+          res.render('game', {
+            username,
+            room: newRoom
+          })
+        })
+      } else {
         res.render('game', {
           username,
-          room: newRoom
+          room: foundRooms[0]
         })
-      })
-    } else {
+      }
+    })
+  } else {
+    Room.findById(req.body.roomId, (err, foundRoom) => {
       res.render('game', {
         username,
-        room: foundRooms[0]
+        room: foundRoom
       })
-    }
-  })
+    })
+  }
 })
 
 router.get('/game/new', (req, res) => {

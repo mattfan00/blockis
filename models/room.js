@@ -10,7 +10,11 @@ var RoomSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  password: String,
+  private: {
+    type: Boolean,
+    default: false
+  },
+  // password: String,
   users: [
     {
       _id: false,

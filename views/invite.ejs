@@ -4,6 +4,7 @@
 
   <%- include('templates/standard.ejs') %>
   <link rel='stylesheet' href='/stylesheets/invite.css'>
+  <script src="/scripts/invite.js"></script>
 </head>
 <body>
   <%- include('templates/navBar.ejs') %>
@@ -17,9 +18,9 @@
           <div class="current-players-slot"><%= user.username %></div>
         <% } %>
       </div>
-      <form>
-        <input placeholder="Enter nickname...">
-        <button type="submit"><h2>play</h2></button>
+      <form action="/game" method="POST" onsubmit="handleSubmit()">
+        <input class="nickname" placeholder="Enter nickname..." onkeyup="handlePlay()" name="username">
+        <button id="play" type="submit"><h2>play</h2></button>
       </form>
     </div>
 
