@@ -8,7 +8,8 @@ router.get('/', (req, res) => {
 
 router.get('/custom', (req, res) => {
   Room.find({}, (err, foundRooms) => {
-    res.render('gameList', {rooms:foundRooms})
+    let filteredRooms = foundRooms.filter(room => !room.private)
+    res.render('gameList', {rooms: filteredRooms})
   })
 })
 

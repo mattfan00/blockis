@@ -10,6 +10,10 @@ var RoomSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  private: {
+    type: Boolean,
+    default: false
+  },
   users: [
     {
       _id: false,

@@ -13,19 +13,25 @@ h1 {
   margin: 10px;
 }
 
-table {
+.table {
   margin-top: 50px;
   min-width: 600px;
   background-color: #2B3449;
-  border-collapse: collapse;
+  display: flex;
+  flex-direction: column;
 }
 
-td {
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.col { 
   text-align: center;
   padding: 15px;
 }
 
-tr:hover {
+.row:hover {
   background-color: #3C4261;
   cursor: pointer;
 }
