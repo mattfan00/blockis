@@ -45,6 +45,10 @@ form input {
   width: 150px;
 }
 
+form input:focus {
+  outline: none;
+}
+
 h2 {
   margin: 0;
 }

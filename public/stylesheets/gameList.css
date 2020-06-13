@@ -62,6 +62,10 @@ h2 {
   width: 150px;
 }
 
+.enter-row input:focus {
+  outline: none;
+}
+
 .enter-row button {
   color: inherit;
   background-color: inherit;
