@@ -28,6 +28,10 @@ h1 {
   cursor: pointer;
 }
 
+.row:hover {
+  background-color: #3C4261;
+}
+
 .col {
   display: flex;
   justify-content: center;

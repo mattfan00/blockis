@@ -25,7 +25,10 @@ window.onload = () => {
           <form onSubmit="handlePassword(event, '${currVisibleId}')">
             <input class="password-input" type="password" placeholder="Enter password..." name="password" onkeypress="removeOutline(this)"> 
           </form>
-        ` 
+        `
+        console.log(passwordSection)
+        let input = document.querySelector(".password-input")
+        input.focus()
       }
       
     })

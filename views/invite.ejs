@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <%- include('templates/standard.ejs') %>
+  <link rel='stylesheet' href='/stylesheets/invite.css'>
+</head>
+<body>
+  <%- include('templates/navBar.ejs') %>
+  <div class="main">
+    <div class="content">
+      <div class="header">
+        <h2>you have been invited to <span class="underline"><%= room.name %></span></h2>
+      </div>
+      <div class="current-players">
+        <% for (user of room.users) { %>
+          <div class="current-players-slot"><%= user.username %></div>
+        <% } %>
+      </div>
+      <form>
+        <input placeholder="Enter nickname...">
+        <button type="submit"><h2>play</h2></button>
+      </form>
+    </div>
+
+
+  </div>
+</body>

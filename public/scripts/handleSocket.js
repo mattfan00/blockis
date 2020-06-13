@@ -1,12 +1,13 @@
 const socket = io()
 
-const roomId = window.location.pathname.split('/')[2]
+// const roomId = window.location.pathname.split('/')[2]
 
-console.log(registeredUser)
+// const username = localStorage.getItem("nickname")
+console.log(username)
 
 socket.emit('joinRoom', {username, roomId})
 
-socket.on('getOtherPlayers', (users) => {
+socket.on('getOtherPlayers', (room) => {
   // Add in the other players
   const players = document.querySelector('.players')
   players.innerHTML = ''
@@ -14,7 +15,7 @@ socket.on('getOtherPlayers', (users) => {
 
   const scoreboard = document.querySelector('.scoreboard-content')
   scoreboard.innerHTML = ''
-  users = users.sort((a,b) => (a.place > b.place) || (!a.place) ? 1 : -1) 
+  users = room.users.sort((a,b) => (a.place > b.place) || (!a.place) ? 1 : -1) 
   users.forEach(user => {
     var div = document.createElement('div')
     div.className = `scoreboard-content-slot ${(user.socketId == socket.id) ? 'active' : ''}` 
@@ -40,8 +41,6 @@ socket.on('getOtherPlayers', (users) => {
       players.appendChild(div)
     })
   }
-
-  
 })
 
 socket.on('startGame', () => {

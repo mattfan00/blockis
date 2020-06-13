@@ -21,7 +21,7 @@ module.exports = (io) => {
         socket.emit('message', 'Welcome to the room')
 
         // Send the list of the other users
-        io.to(roomId).emit('getOtherPlayers', foundRoom.users)
+        io.to(roomId).emit('getOtherPlayers', foundRoom)
 
         // If there is only one user in the room, start game immediately
         if (foundRoom.users.length == 1) {
