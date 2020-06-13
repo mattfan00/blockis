@@ -8,13 +8,8 @@ router.get('/', (req, res) => {
 
 router.get('/custom', (req, res) => {
   Room.find({}, (err, foundRooms) => {
-    let filteredRooms = foundRooms.filter(room => !room.private)
-    res.render('gameList', {rooms: filteredRooms})
+    res.render('gameList', {rooms:foundRooms})
   })
-})
-
-router.get('/settings', (req, res) => {
-  res.render('settings')
 })
 
 module.exports = router

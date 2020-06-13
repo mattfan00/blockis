@@ -3,7 +3,6 @@
   <head>
     <%- include('templates/standard.ejs') %>
     <link rel="stylesheet" href="/stylesheets/gameList.css">
-    <script src="/scripts/gameList.js"></script>
   </head>
   <body>
     <%- include('templates/navBar.ejs') %>
@@ -13,17 +12,16 @@
         <h1>browse games</h1>
         <div>choose a game to join or create your own</div>
       </div>
-      <div class="table">
+      <table>
         <% for (room of rooms) { %>
-          <form class="row-form" id="<%= room.id %>" action="/game" method="POST" onsubmit="handleSubmit()">
-            <div class="row">
-              <div class="col"><%= room.name %></div> 
-              <div class="col">Battle Royale</div>
-              <div class="col"><%= room.users.length %>/7</div>
-            </div>
-          </form>
+          <tr onclick="window.location='/game/<%= room.id %>'">
+            <td><%= room.name %></td>
+            <td>Battle Royale</td>
+            <td><%= room.users.length %>/7</td>
+            <td>Private</td>
+          </tr>
         <% } %>
-      </div>
+      </table>
     </div>
   </body>
 </html>

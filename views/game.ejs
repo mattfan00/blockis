@@ -10,7 +10,7 @@
   <div class='main'>
     <div class='scoreboard'>
       <div class='scoreboard-header'>
-        <h2><%= room.name %></h2>
+        <h2>Room name</h2>
       </div>
       <div class='scoreboard-content'>
 
@@ -39,7 +39,7 @@
 
 
 
-  <!-- <script src='/scripts/generateName.js'></script>
+  <script src='/scripts/generateName.js'></script>
   <% if (currentUser) {%>
     <script>
       let registeredUser = '<%- JSON.stringify(currentUser) %>'
@@ -51,11 +51,7 @@
       const registeredUser = null 
       const username = generateName()
     </script>
-  <% } %> -->
-  <script>
-    const username = "<%= username %>"
-    const roomId = "<%= room.id %>"
-  </script>
+  <% } %>
   <script src='/socket.io/socket.io.js'></script>
   <script src='/scripts/handleSocket.js'></script>
   <script src='/scripts/constants.js'></script>

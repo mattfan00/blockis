@@ -21,7 +21,7 @@ module.exports = (io) => {
         socket.emit('message', 'Welcome to the room')
 
         // Send the list of the other users
-        io.to(roomId).emit('getOtherPlayers', foundRoom)
+        io.to(roomId).emit('getOtherPlayers', foundRoom.users)
 
         // If there is only one user in the room, start game immediately
         if (foundRoom.users.length == 1) {
@@ -138,12 +138,7 @@ function startCountdown(socket, roomId) {
   }, 1000)
 
   socket.on('disconnect', () => {
-    Room.findById(roomId, (err, foundRoom) => {
-      // don't clear the countdown if there are other players depending on the countdown
-      if (foundRoom.users.length == 1) {
-        clearInterval(intervalId)
-      }
-    })
+    clearInterval(intervalId)
   })
 
 }

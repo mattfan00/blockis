@@ -3,7 +3,6 @@
   <head>
     <%- include('templates/standard.ejs') %>
     <link rel="stylesheet" href="/stylesheets/home.css">
-    <script src="/scripts/home.js"></script>
   </head>
   <body>
     <nav class='top-nav'>
@@ -11,7 +10,7 @@
 
       </div>
       <div class='right'>
-        <!-- <% if (currentUser) { %>
+        <% if (currentUser) { %>
           <a class="nav-item"><%= currentUser.username %></a>
         <% } else { %>
           <a href='/login' class='nav-item'>
@@ -20,7 +19,7 @@
           <a href='/register' class='nav-item'>
             Register
           </a>
-        <% } %> -->
+        <% } %>
       </div>
     </nav>
 
@@ -29,13 +28,10 @@
         <h1>blockis</h1>
         <div>an online battle royale Tetris clone</div>
 
-        <div>
-          <form class="menu" action="/game" method="POST" onsubmit="handleSubmit()">
-            <input placeholder="Enter nickname" class="nickname" name="username" onkeyup="handlePlay()">
-            <button class="menu-item" id="play" type="submit"><h2>play</h2></button>
-            <a href="/custom" class="menu-item"><h2>browse games</h2></a>
-            <a href="/settings" class="menu-item"><h2>settings</h2></a>
-          </form>
+        <div class="menu">
+          <a href="/game" class="menu-item"><h2>play</h2></a>
+          <a href="/custom" class="menu-item"><h2>browse games</h2></a>
+          <a href="/" class="menu-item"><h2>settings</h2></a>
         </div>
       </div>
       

@@ -4,69 +4,26 @@ const express = require('express')
 
 
 router.get('/game', (req, res) => {
-  // Room.find({}, (err, foundRooms) => {
-  //   console.log(res.locals.username)
-  //   let username = req.session.username
-  //   req.session.username = null
-  //   if (foundRooms.length == 0) {
-  //     Room.create({name: 'default'}, (err, newRoom) => {
-  //       res.render('game', {
-  //         username,
-  //         room: newRoom
-  //       })
-  //     })
-  //   } else {
-  //     res.render('game', {
-  //       username,
-  //       room: foundRooms[0]
-  //     })
-  //   }
-  // })
-  res.redirect("/")
-})
-
-router.post('/game', (req, res) => {
-  let username = req.body.username
-  if (!req.body.roomId) {
-    Room.find({}, (err, foundRooms) => {
-      if (foundRooms.length == 0) {
-        Room.create({name: 'default'}, (err, newRoom) => {
-          res.render('game', {
-            username,
-            room: newRoom
-          })
-        })
-      } else {
-        res.render('game', {
-          username,
-          room: foundRooms[0]
-        })
-      }
-    })
-  } else {
-    Room.findById(req.body.roomId, (err, foundRoom) => {
-      res.render('game', {
-        username,
-        room: foundRoom
+  Room.find({}, (err, foundRooms) => {
+    if (foundRooms.length == 0) {
+      Room.create({name: 'default'}, (err, newRoom) => {
+        res.redirect('/game/' + newRoom.id)
       })
-    })
-  }
+    } else {
+      res.redirect('/game/' + foundRooms[0].id)
+    }
+  })
 })
 
 router.get('/game/new', (req, res) => {
   res.render('newRoom')
 })
 
-router.get('/game/invite/:id', (req, res) => {
-  // Room.findById(req.params.id, (err, foundRoom) => {
-  //   res.render('game', {room: foundRoom})
-  // })
-  Room.findById(req.params.id, (err, foundRoom) => {
-    res.render("invite", {room: foundRoom})
-  })
+router.get('/game/:id', (req, res) => {
+  res.render('game')
 })
 
-router.post('/game/new', async (req, res) => {
+router.post('/game', async (req, res) => {
   try {
     const { name } = req.body
     let newRoom = await Room.create({name})
@@ -76,12 +33,6 @@ router.post('/game/new', async (req, res) => {
   } catch(err) {
     console.log(err)
   }
-})
-
-router.get("/api/game/:id", (req, res) => {
-  Room.findById(req.params.id, (err, foundRoom) => {
-    res.json(foundRoom)
-  })
 })
 
 module.exports = router
