@@ -10,6 +10,8 @@ const ctxHold = canvasHold.getContext('2d');
 
 var animationId, gameStarted
 
+let timers = {}
+
 let board = new Board(ctx, ctxNext, ctxHold)
 console.log(board)
 
@@ -37,8 +39,26 @@ function animate(now = 0) {
 }
 
 function addEventListener() {
-  document.addEventListener('keydown', e => {
-    e.preventDefault()
+  document.onkeydown = (e) => {
+    // e.preventDefault()
+    let key = e.keyCode
+    if (!(Object.values(KEY).includes(key))) 
+      return true
+
+    // dont let drop and rotate have the high repeating action
+    if (!(moveList.includes(key))) {
+      keyAction(key)
+    }
+    if (!(key in timers) && moveList.includes(key)) {
+      timers[key] = null
+      keyAction(key)
+
+      // after a set amount of time, do the key action again as long as the key is being pressed down
+      timers[key] = setInterval(() => {
+        keyAction(key)
+      }, 100)
+    }
+    return false
 
     if (!gameStarted) {
       return
@@ -72,7 +92,48 @@ function addEventListener() {
       piece: board.piece,
       ghost: board.ghost
     })
-  })
+  }
+
+  document.onkeyup = (e) => {
+    console.log("key up")
+    let key = e.keyCode
+    if (key in timers) {
+      if (timers[key] !== null)
+          clearInterval(timers[key]);
+      delete timers[key];
+    }
+  }
+}
+
+function keyAction(key) {
+    if (key == KEY.DROP) {
+      while (board.valid(KEY.DOWN)) {
+        board.piece.move(KEY.DOWN)
+      }
+      board.piece.draw()
+      board.drop()
+    } else if (key == KEY.ROTATE) {
+      if (board.validRotate()) {
+        board.piece.shape = board.piece.rotate()  
+      }
+    } else if (key == KEY.HOLD) {
+      board.holdPiece()
+    } else if (moveList.includes(key)) {
+      if (board.valid(key)) {
+        board.piece.move(key)
+      }
+    }
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    board.draw()
+
+    socket.emit('draw', {
+      username,
+      socketId: socket.id,
+      grid: board.grid,
+      piece: board.piece,
+      ghost: board.ghost
+    })
 }
 
 function gameOver() {
