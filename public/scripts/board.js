@@ -5,6 +5,7 @@ class Board {
   piece;
   nextPiece;
   hold;
+  changedHold;
   ghost;
   grid;
 
@@ -12,6 +13,7 @@ class Board {
     this.ctx = ctx
     this.ctxNext = ctxNext
     this.ctxHold = ctxHold
+    this.changedHold = false
     this.init()
   }
 
@@ -87,6 +89,7 @@ class Board {
       this.piece.ctx = this.ctx;
       this.piece.x = 3;
       this.getNewPiece()
+      this.changedHold = false
     }
     socket.emit('draw', {
       username,
@@ -98,21 +101,27 @@ class Board {
     return true
   }
 
-  sayHi() {
-    console.log('hefjedakl;fdsi')
-  }
-
   holdPiece() {
-    // this.hold = Object.assign(Object.create(Object.getPrototypeOf(this.piece)), this.piece) // copy piece
     if (!this.hold) {
+      // this.hold = Object.assign(Object.create(Object.getPrototypeOf(this.piece)), this.piece) // copy piece
       this.hold = new Piece(this.ctxHold)
       this.hold.initShape(this.piece.shapeId)
+      this.hold.x = 0
       this.piece = this.nextPiece 
       this.piece.ctx = this.ctx;
       this.piece.x = 3;
       this.getNewPiece()
+      this.changedHold = true
     } else {
-
+      if (!this.changedHold) {
+        this.ctxHold.clearRect(0, 0, this.ctxHold.canvas.width, this.ctxHold.canvas.height);
+        let pieceShape = this.piece.shapeId
+        this.piece.initShape(this.hold.shapeId)
+        this.piece.x = 3
+        this.piece.y = 0
+        this.hold.initShape(pieceShape)
+        this.changedHold = true
+      }
     }
   }
 
