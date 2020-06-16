@@ -8,7 +8,8 @@ const KEY = {
   RIGHT: 39,
   DOWN: 40,
   DROP: 32,
-  ROTATE: 38
+  ROTATE: 38,
+  HOLD: 67
 }
 
 const moveList = [

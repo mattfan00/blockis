@@ -1,14 +1,17 @@
 class Board {
   ctx;
   ctxNext;
+  ctxHold;
   piece;
   nextPiece;
+  hold;
   ghost;
   grid;
 
-  constructor(ctx, ctxNext) {
+  constructor(ctx, ctxNext, ctxHold) {
     this.ctx = ctx
     this.ctxNext = ctxNext
+    this.ctxHold = ctxHold
     this.init()
   }
 
@@ -23,15 +26,22 @@ class Board {
     this.ctxNext.canvas.width = 4 * BLOCK_SIZE;
     this.ctxNext.canvas.height = 4 * BLOCK_SIZE;
     this.ctxNext.scale(BLOCK_SIZE, BLOCK_SIZE);
+
+    this.ctxHold.canvas.width = 4 * BLOCK_SIZE;
+    this.ctxHold.canvas.height = 4 * BLOCK_SIZE;
+    this.ctxHold.scale(BLOCK_SIZE, BLOCK_SIZE);
   }
   
   // Reset the board when we start a new game.
   reset() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctxNext.clearRect(0, 0, this.ctxNext.canvas.width, this.ctxNext.canvas.height);
+    this.ctxHold.clearRect(0, 0, this.ctxHold.canvas.width, this.ctxHold.canvas.height);
     this.piece = new Piece(this.ctx);
+    this.piece.x = 3;
     this.ghost = Object.assign(Object.create(Object.getPrototypeOf(this.piece)), this.piece)
     this.getNewPiece()
+    this.hold = null
     this.grid = this.getEmptyBoard();
   }
 
@@ -44,6 +54,9 @@ class Board {
     }
     this.piece.draw()
     this.ghost.draw()
+    if (this.hold) {
+      this.hold.draw()
+    }
     this.drawBoard()
     // socket.emit('draw', {
     //   username,
@@ -72,6 +85,7 @@ class Board {
       }
       this.piece = this.nextPiece
       this.piece.ctx = this.ctx;
+      this.piece.x = 3;
       this.getNewPiece()
     }
     socket.emit('draw', {
@@ -82,6 +96,24 @@ class Board {
       ghost: this.ghost
     })
     return true
+  }
+
+  sayHi() {
+    console.log('hefjedakl;fdsi')
+  }
+
+  holdPiece() {
+    // this.hold = Object.assign(Object.create(Object.getPrototypeOf(this.piece)), this.piece) // copy piece
+    if (!this.hold) {
+      this.hold = new Piece(this.ctxHold)
+      this.hold.initShape(this.piece.shapeId)
+      this.piece = this.nextPiece 
+      this.piece.ctx = this.ctx;
+      this.piece.x = 3;
+      this.getNewPiece()
+    } else {
+
+    }
   }
 
   valid(key, piece=this.piece) {

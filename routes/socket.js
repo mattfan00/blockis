@@ -138,7 +138,11 @@ function startCountdown(socket, roomId) {
   }, 1000)
 
   socket.on('disconnect', () => {
-    clearInterval(intervalId)
+    Room.findById(roomId, (err, foundRoom) => {
+      // don't clear the countdown if there are other players depending on the countdown
+      if (foundRoom.users.length == 1) {
+        clearInterval(intervalId)
+      }
+    })
   })
-
 }

@@ -8,17 +8,18 @@
 <body>
   <%- include('templates/navBar.ejs') %>
   <div class='main'>
-    <div class='scoreboard'>
+    <div class='scoreboard hide'>
       <div class='scoreboard-header'>
-        <h2>Room name</h2>
+        <h2><%= room.name %></h2>
       </div>
       <div class='scoreboard-content'>
 
       </div>
     </div>
-    <div class='games blur'>
+    <div class='games'>
       <div class='main-game'>
         <div class='main-game-slot'>
+          <canvas id="hold" class="main-game-hold"></canvas>
           <canvas id="board" class="main-game-board"></canvas>
           <canvas id="next" class="main-game-next"></canvas>
         </div>

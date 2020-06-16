@@ -4,9 +4,14 @@ const ctx = canvas.getContext('2d');
 const canvasNext = document.getElementById('next')
 const ctxNext = canvasNext.getContext('2d');
 
+const canvasHold= document.getElementById('hold')
+const ctxHold = canvasHold.getContext('2d');
+
+
 var animationId, gameStarted
 
-let board = new Board(ctx, ctxNext)
+let board = new Board(ctx, ctxNext, ctxHold)
+console.log(board)
 
 addEventListener()
 
@@ -38,7 +43,7 @@ function addEventListener() {
     if (!gameStarted) {
       return
     }
-  
+
     if (e.keyCode == KEY.DROP) {
       while (board.valid(KEY.DOWN)) {
         board.piece.move(KEY.DOWN)
@@ -49,6 +54,8 @@ function addEventListener() {
       if (board.validRotate()) {
         board.piece.shape = board.piece.rotate()  
       }
+    } else if (e.keyCode == KEY.HOLD) {
+      board.holdPiece()
     } else if (moveList.includes(e.keyCode)) {
       if (board.valid(e.keyCode)) {
         board.piece.move(e.keyCode)

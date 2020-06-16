@@ -15,9 +15,9 @@ body {
   background-color: #2B3449;
   border-radius: 10px;
   border: 1px solid black;
-  min-width: 300px;
+  min-width: 400px;
   height: 300px;
-  transition: 0.3s;
+  transition: 0.1s;
 }
 
 .scoreboard-header {
@@ -41,7 +41,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 100px;
-  transition: 0.5s
+  transition: 0.1s;
 }
 
 .blur {
@@ -65,11 +65,16 @@ body {
 
 .main-game-board {
   border: 1px solid #657080;
-  margin-right: 20px;
+  margin: 0 20px;
   background-color: #090808;
 }
 
 .main-game-next {
+  border: 1px solid #657080;
+  background-color: #090808;
+}
+
+.main-game-hold {
   border: 1px solid #657080;
   background-color: #090808;
 }

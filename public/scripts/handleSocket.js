@@ -12,18 +12,19 @@ socket.on('getOtherPlayers', (users) => {
   players.innerHTML = ''
   // document.querySelector('.scoreboard').classList.remove('hide')
 
-  const scoreboard = document.querySelector('.scoreboard-content')
-  scoreboard.innerHTML = ''
-  users = users.sort((a,b) => (a.place > b.place) || (!a.place) ? 1 : -1) 
-  users.forEach(user => {
-    var div = document.createElement('div')
-    div.className = `scoreboard-content-slot ${(user.socketId == socket.id) ? 'active' : ''}` 
-    div.innerHTML = `
-      <div>${user.place ? user.place : ''}</div>
-      <div>${user.username}</div>
-    `
-    scoreboard.appendChild(div)
-  })
+  // // this updates scoreboard when people join the lobby when the game first starts
+  // const scoreboard = document.querySelector('.scoreboard-content')
+  // scoreboard.innerHTML = ''
+  // users = users.sort((a,b) => (a.place > b.place) || (!a.place) ? 1 : -1) 
+  // users.forEach(user => {
+  //   var div = document.createElement('div')
+  //   div.className = `scoreboard-content-slot ${(user.socketId == socket.id) ? 'active' : ''}` 
+  //   div.innerHTML = `
+  //     <div>${user.place ? user.place : ''}</div>
+  //     <div>${user.username}</div>
+  //   `
+  //   scoreboard.appendChild(div)
+  // })
 
   if (users.length == 1) {
     players.innerHTML = 'No other players'

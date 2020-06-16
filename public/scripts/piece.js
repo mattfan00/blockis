@@ -20,6 +20,12 @@ class Piece {
   
   }
 
+  initShape(shapeId) {
+    this.shapeId = shapeId
+    this.color = SHAPES[this.shapeId].color
+    this.shape = SHAPES[this.shapeId].shape
+  }
+
   draw() {
     this.ctx.fillStyle = this.color
     for (let i = 0; i < this.shape.length; i++) {
