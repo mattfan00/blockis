@@ -19,6 +19,12 @@ const moveList = [
   KEY.DOWN
 ]
 
+const GARBAGE = {
+  2: 1,
+  3: 2,
+  4: 4
+}
+
 const SHAPES = [
   { 
     color: 'rgba(0, 209, 209, 1)', // cyan

@@ -81,6 +81,9 @@ class Board {
     } else {
       this.freeze()
       this.clearLines()
+      if (garbageLines > 0) {
+        this.addGarbage()
+      }
       if (this.piece.y <= 0) {
         // Game over
         return false;
@@ -183,7 +186,11 @@ class Board {
     for (let y = 0; y < this.grid[0].length; y++) {
       for (let x = 0; x < this.grid.length; x++) {
         if (this.grid[x][y] > 0) {
-          this.ctx.fillStyle = SHAPES[this.grid[x][y] - 1].color
+          if (this.grid[x][y] == 8) {
+            this.ctx.fillStyle = "rgba(176, 176, 176, 1)"
+          } else {
+            this.ctx.fillStyle = SHAPES[this.grid[x][y] - 1].color
+          }
           this.ctx.fillRect(y, x, 1, 1)
         }
       }
@@ -191,15 +198,40 @@ class Board {
   }
 
   clearLines() {
+    let numCleared = 0
     for (let row = 0; row < this.grid.length; row++) {
       if (this.grid[row].every(i => i > 0)) {
         // Remove the row.
         this.grid.splice(row, 1);
+        numCleared++
 
         // Add zero filled row at the top.
         this.grid.unshift(Array(COLS).fill(0));
       }
     }
+
+    // send garbage
+    if (numCleared > 1) {
+      let numGarbageLines = GARBAGE[numCleared]
+      console.log(numGarbageLines)
+      socket.emit('garbage', numGarbageLines)
+    }
+  }
+
+  addGarbage() {
+    let gapIndex = Math.floor(Math.random() * COLS)
+    let gapArray = Array(COLS).fill(8)
+    gapArray[gapIndex] = 0
+
+    for (let i = 0; i < garbageLines; i++) {
+      this.grid.splice(0, 1)
+      this.grid.push(gapArray)
+    }
+
+    garbageLines = 0
+
+    console.table(this.grid)
+
   }
   
   // Get matrix filled with zeros.

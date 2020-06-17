@@ -13,8 +13,9 @@
 
 ## Upcoming Objectives
 1. ~~Implement Tetris base game functionality~~
+  1. Add in garbage
 1. ~~Have multple game rooms~~
-1. Create private rooms
-1. Create/Implement Wireframes
+1. ~~Create private rooms~~
+1. ~~Create/Implement Wireframes~~
 1. Deploy to Heroku
 

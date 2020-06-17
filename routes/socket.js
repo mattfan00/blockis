@@ -37,6 +37,21 @@ module.exports = (io) => {
       socket.to(roomId).broadcast.emit('draw', drawDetails)
     })
 
+    socket.on('garbage', (numLines) => {
+      Room.findById(roomId, (err, foundRoom) => {
+        if (foundRoom.users.filter(user => !user.gameOver && user.joinedGame).length > 1) {
+          let eligibleUsers = foundRoom.users.filter(user => socket.id != user.socketId)
+          let targetUser = eligibleUsers[Math.floor(Math.random()*eligibleUsers.length)]
+          console.log(targetUser)
+
+          socket.to(roomId).broadcast.emit('garbage', {
+            socketId: targetUser.socketId,
+            numLines
+          })
+        }
+      })
+    })
+
     socket.on('playerGameOver', (details) => {
       Room.findById(roomId, (err, foundRoom) => {
         // handle the case that its just one player in the game

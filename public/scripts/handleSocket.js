@@ -4,6 +4,8 @@ const roomId = window.location.pathname.split('/')[2]
 
 console.log(registeredUser)
 
+let garbageLines = 0
+
 socket.emit('joinRoom', {username, roomId})
 
 socket.on('getOtherPlayers', (users) => {
@@ -98,10 +100,24 @@ socket.on('draw', (drawDetails) => {
   for (let y = 0; y < drawDetails.grid[0].length; y++) {
     for (let x = 0; x < drawDetails.grid.length; x++) {
       if (drawDetails.grid[x][y] > 0) {
-        ctxPlayer.fillStyle = SHAPES[drawDetails.grid[x][y] - 1].color
+        if (drawDetails.grid[x][y] == 8) {
+          ctxPlayer.fillStyle = "rgba(176, 176, 176, 1)"
+        } else {
+          ctxPlayer.fillStyle = SHAPES[drawDetails.grid[x][y] - 1].color
+        }
         ctxPlayer.fillRect(y*10, x*10, 10, 10)
       }
     }
+  }
+})
+
+socket.on("garbage", (details) => {
+  console.log(details)
+
+  //add garbage to this user
+  if (details.socketId == socket.id) {
+    // board.addGarbage(details.numLines)
+    garbageLines += details.numLines
   }
 })
 

@@ -12,6 +12,8 @@ var animationId, gameStarted
 
 let timers = {}
 
+// let garbageLines = 0
+
 let board = new Board(ctx, ctxNext, ctxHold)
 console.log(board)
 
@@ -62,7 +64,6 @@ function addEventListener() {
   }
 
   document.onkeyup = (e) => {
-    console.log("key up")
     let key = e.keyCode
     if (key in timers) {
       if (timers[key] !== null)
