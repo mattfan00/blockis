@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('templates/standard.ejs') %>
+    <link rel="stylesheet" href="/stylesheets/settings.css">
+    <script src="/scripts/settings.js"></script>
+  </head>
+  <body>
+    <%- include('templates/navBar.ejs') %>
+
+    <div class="main"> 
+      <div class="header">
+        <h1>settings</h1>
+        <div>configure your controls</div>
+      </div>
+      <div class="controls">
+        <div class="reset">
+          <button onclick="resetDefaults()"><h3>reset</h3></button>
+        </div>
+        <div class="controls-slot">
+          <div>left</div>
+          <div id="left" onclick="changeBind(event)">&larr;</div>
+        </div>
+        <div class="controls-slot">
+          <div>right</div>
+          <div id="right" onclick="changeBind(event)">&rarr;</div>
+        </div>
+        <div class="controls-slot">
+          <div>down</div>
+          <div id="down" onclick="changeBind(event)">&darr;</div>
+        </div>
+        <div class="controls-slot">
+          <div>drop</div>
+          <div id="drop" onclick="changeBind(event)">&blank;</div>
+        </div>
+        <div class="controls-slot">
+          <div>rotate</div>
+          <div id="rotate" onclick="changeBind(event)">&uarr;</div>
+        </div>
+        <div class="controls-slot">
+          <div>hold</div>
+          <div id="hold" onclick="changeBind(event)">c</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

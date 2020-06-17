@@ -59,39 +59,6 @@ function addEventListener() {
       }, 100)
     }
     return false
-
-    if (!gameStarted) {
-      return
-    }
-
-    if (e.keyCode == KEY.DROP) {
-      while (board.valid(KEY.DOWN)) {
-        board.piece.move(KEY.DOWN)
-      }
-      board.piece.draw()
-      board.drop()
-    } else if (e.keyCode == KEY.ROTATE) {
-      if (board.validRotate()) {
-        board.piece.shape = board.piece.rotate()  
-      }
-    } else if (e.keyCode == KEY.HOLD) {
-      board.holdPiece()
-    } else if (moveList.includes(e.keyCode)) {
-      if (board.valid(e.keyCode)) {
-        board.piece.move(e.keyCode)
-      }
-    }
-
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    board.draw()
-
-    socket.emit('draw', {
-      username,
-      socketId: socket.id,
-      grid: board.grid,
-      piece: board.piece,
-      ghost: board.ghost
-    })
   }
 
   document.onkeyup = (e) => {

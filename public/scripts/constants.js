@@ -2,14 +2,15 @@ const COLS = 10;
 const ROWS = 20;
 const BLOCK_SIZE = 20;
 
+let KEY = {}
 
-const KEY = {
-  LEFT: 37,
-  RIGHT: 39,
-  DOWN: 40,
-  DROP: 32,
-  ROTATE: 38,
-  HOLD: 67
+KEY = {
+  LEFT: localStorage.getItem("left") ? JSON.parse(localStorage.getItem("left")).keyCode : 37,
+  RIGHT: localStorage.getItem("right") ? JSON.parse(localStorage.getItem("right")).keyCode : 39,
+  DOWN: localStorage.getItem("down") ? JSON.parse(localStorage.getItem("down")).keyCode : 40,
+  DROP: localStorage.getItem("drop") ? JSON.parse(localStorage.getItem("drop")).keyCode : 32,
+  ROTATE: localStorage.getItem("rotate") ? JSON.parse(localStorage.getItem("rotate")).keyCode : 38,
+  HOLD: localStorage.getItem("hold") ? JSON.parse(localStorage.getItem("hold")).keyCode : 67
 }
 
 const moveList = [
