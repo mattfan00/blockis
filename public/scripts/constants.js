@@ -2,6 +2,8 @@ const COLS = 10;
 const ROWS = 20;
 const BLOCK_SIZE = 20;
 
+const MAX_GARB_LINES = 12;
+
 let KEY = {}
 
 KEY = {
@@ -20,6 +22,7 @@ const moveList = [
 ]
 
 const GARBAGE = {
+  1: 0,
   2: 1,
   3: 2,
   4: 4

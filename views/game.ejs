@@ -19,7 +19,10 @@
     <div class='games'>
       <div class='main-game'>
         <div class='main-game-slot'>
-          <canvas id="hold" class="main-game-hold"></canvas>
+          <div class="main-game-left">
+            <canvas id="hold" class="main-game-hold"></canvas>
+            <canvas id="garbage" class="garbage-bar"></canvas>
+          </div>
           <canvas id="board" class="main-game-board"></canvas>
           <canvas id="next" class="main-game-next"></canvas>
         </div>
@@ -34,10 +37,10 @@
   <h3 class='countdown'>
 
   </h3>
-  
 
+  <div class="garbage">
 
-
+  </div>
 
 
   <script src='/scripts/generateName.js'></script>

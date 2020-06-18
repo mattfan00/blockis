@@ -82,6 +82,7 @@ class Board {
       this.freeze()
       this.clearLines()
       if (garbageLines > 0) {
+        console.log("adding garbage")
         this.addGarbage()
       }
       if (this.piece.y <= 0) {
@@ -210,11 +211,23 @@ class Board {
       }
     }
 
-    // send garbage
-    if (numCleared > 1) {
-      let numGarbageLines = GARBAGE[numCleared]
-      console.log(numGarbageLines)
-      socket.emit('garbage', numGarbageLines)
+    if (numCleared > 0) {
+      let numSend = 0
+      console.log("currenlty have " + garbageLines + " garbage lines queued")
+      console.log("generated " + GARBAGE[numCleared])
+      if (garbageLines - GARBAGE[numCleared] < 0) {
+        garbageLines = 0
+        numSend = Math.abs(garbageLines - GARBAGE[numCleared])
+      } else { 
+        garbageLines -= GARBAGE[numCleared]
+      }
+      
+      document.querySelector(".garbage").innerHTML = garbageLines
+
+      if (numSend > 0) {
+        console.log("sending " + numSend + " garbage lines")
+        socket.emit('garbage', numSend)
+      }
     }
   }
 
@@ -229,6 +242,9 @@ class Board {
     }
 
     garbageLines = 0
+    // document.querySelector(".garbage").innerHTML = garbageLines
+    ctxGarb.clearRect(0, 0, ctxGarb.canvas.width, ctxGarb.canvas.height)
+
 
     console.table(this.grid)
 

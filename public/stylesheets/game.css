@@ -65,17 +65,32 @@ body {
 
 .main-game-board {
   border: 1px solid #657080;
-  margin: 0 20px;
+  /* margin: 0 20px; */
   background-color: #090808;
 }
 
 .main-game-next {
   border: 1px solid #657080;
+  border-left: none;
   background-color: #090808;
+}
+
+.main-game-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .main-game-hold {
   border: 1px solid #657080;
+  border-right: none;
+  background-color: #090808;
+}
+
+.garbage-bar {
+  border: 1px solid #657080;
+  border-right: none;
+  border-top: none;
   background-color: #090808;
 }
 

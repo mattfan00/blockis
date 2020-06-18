@@ -4,9 +4,14 @@ const ctx = canvas.getContext('2d');
 const canvasNext = document.getElementById('next')
 const ctxNext = canvasNext.getContext('2d');
 
-const canvasHold= document.getElementById('hold')
+const canvasHold = document.getElementById('hold')
 const ctxHold = canvasHold.getContext('2d');
 
+const canvasGarb = document.getElementById("garbage") 
+const ctxGarb = canvasGarb.getContext('2d')
+ctxGarb.canvas.width = 10
+ctxGarb.canvas.height = (20*BLOCK_SIZE) - (4*BLOCK_SIZE) - 1
+ctxGarb.scale(ctxGarb.canvas.width, ctxGarb.canvas.height / MAX_GARB_LINES)
 
 var animationId, gameStarted
 

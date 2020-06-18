@@ -118,6 +118,10 @@ socket.on("garbage", (details) => {
   if (details.socketId == socket.id) {
     // board.addGarbage(details.numLines)
     garbageLines += details.numLines
+    document.querySelector(".garbage").innerHTML = garbageLines
+    ctxGarb.clearRect(0, 0, ctxGarb.canvas.width, ctxGarb.canvas.height)
+    ctxGarb.fillStyle = 'red'
+    ctxGarb.fillRect(0, MAX_GARB_LINES, 1, -garbageLines)
   }
 })
 
