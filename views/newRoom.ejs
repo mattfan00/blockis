@@ -2,13 +2,27 @@
 <html>
   <head>
     <%- include('templates/standard.ejs') %>
+    <link rel="stylesheet" href="/stylesheets/newRoom.css">
+    <script src="/scripts/newRoom.js"></script>
   </head>
   <body>
     <%- include('templates/navBar.ejs') %>
-    
-    <form action="/game" method="POST">
-      <input placeholder="Name" name="name">
-      <button>Submit</button>
-    </form>
+    <div class="main">
+      <div class="header">
+        <h1>create a new game</h1>
+      </div>
+      <form action="/game" method="POST">
+        <div>
+          <input placeholder="Name" name="name">
+          <button type="button" id="private-btn" onclick="togglePrivate(event)"><h3>private</h3></button>
+        </div>
+        <div class="hide">
+          <input type="checkbox" name="private" id="private">
+        </div>
+        <div>
+          <button type="submit"><h3>submit</h3></button>
+        </div>
+      </form>
+    </div>
   </body>
 </html>

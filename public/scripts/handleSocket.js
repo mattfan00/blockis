@@ -120,6 +120,8 @@ socket.on("garbage", (details) => {
     garbageLines += details.numLines
     document.querySelector(".garbage").innerHTML = garbageLines
     ctxGarb.clearRect(0, 0, ctxGarb.canvas.width, ctxGarb.canvas.height)
+    // ctxGarb.strokeStyle = "white"
+    // ctxGarb.strokeRect(0, 1, 1, 5)
     ctxGarb.fillStyle = 'red'
     ctxGarb.fillRect(0, MAX_GARB_LINES, 1, -garbageLines)
   }

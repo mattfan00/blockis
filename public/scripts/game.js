@@ -9,9 +9,6 @@ const ctxHold = canvasHold.getContext('2d');
 
 const canvasGarb = document.getElementById("garbage") 
 const ctxGarb = canvasGarb.getContext('2d')
-ctxGarb.canvas.width = 10
-ctxGarb.canvas.height = (20*BLOCK_SIZE) - (4*BLOCK_SIZE) - 1
-ctxGarb.scale(ctxGarb.canvas.width, ctxGarb.canvas.height / MAX_GARB_LINES)
 
 var animationId, gameStarted
 
@@ -19,7 +16,7 @@ let timers = {}
 
 // let garbageLines = 0
 
-let board = new Board(ctx, ctxNext, ctxHold)
+let board = new Board(ctx, ctxNext, ctxHold, ctxGarb)
 console.log(board)
 
 addEventListener()

@@ -27,11 +27,12 @@ router.get('/game/:id', (req, res) => {
 
 router.post('/game', async (req, res) => {
   try {
-    const { name } = req.body
-    let newRoom = await Room.create({name})
+    let { name, private } = req.body
+    private = private == "on" ? true : false
+    let newRoom = await Room.create({name, private})
     if (!newRoom) throw Error('Error creating room')
 
-    res.redirect('/')
+    res.redirect('/game/' + newRoom.id)
   } catch(err) {
     console.log(err)
   }

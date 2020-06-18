@@ -6,10 +6,15 @@ class Piece {
   shapeId;
   ctx;
   
-  constructor(ctx) {
+  constructor(ctx, isMain) {
     this.ctx = ctx;
-    this.x = 0;
-    this.y = 0;
+    if (isMain) {
+      this.x = 3
+      this.y = 0
+    } else {
+      this.x = 1
+      this.y = 2
+    }
     this.spawn();
   }
   
@@ -24,6 +29,16 @@ class Piece {
     this.shapeId = shapeId
     this.color = SHAPES[this.shapeId].color
     this.shape = SHAPES[this.shapeId].shape
+  }
+
+  setPosition(isMain) {
+    if (isMain) {
+      this.x = 3
+      this.y = 0
+    } else {
+      this.x = 1
+      this.y = 2
+    }
   }
 
   draw() {

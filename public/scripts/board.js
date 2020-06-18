@@ -9,10 +9,11 @@ class Board {
   ghost;
   grid;
 
-  constructor(ctx, ctxNext, ctxHold) {
+  constructor(ctx, ctxNext, ctxHold, ctxGarb) {
     this.ctx = ctx
     this.ctxNext = ctxNext
     this.ctxHold = ctxHold
+    this.ctxGarb = ctxGarb
     this.changedHold = false
     this.init()
   }
@@ -27,11 +28,17 @@ class Board {
     // Size canvas for four blocks.
     this.ctxNext.canvas.width = 4 * BLOCK_SIZE;
     this.ctxNext.canvas.height = 4 * BLOCK_SIZE;
-    this.ctxNext.scale(BLOCK_SIZE, BLOCK_SIZE);
+    this.ctxNext.scale(13, 13)
+    // this.ctxNext.scale(BLOCK_SIZE, BLOCK_SIZE);
 
     this.ctxHold.canvas.width = 4 * BLOCK_SIZE;
     this.ctxHold.canvas.height = 4 * BLOCK_SIZE;
-    this.ctxHold.scale(BLOCK_SIZE, BLOCK_SIZE);
+    this.ctxHold.scale(13, 13)
+    // this.ctxHold.scale(BLOCK_SIZE, BLOCK_SIZE);
+
+    this.ctxGarb.canvas.width = 10
+    this.ctxGarb.canvas.height = (20*BLOCK_SIZE) - (4*BLOCK_SIZE) - 1
+    this.ctxGarb.scale(ctxGarb.canvas.width, ctxGarb.canvas.height / MAX_GARB_LINES)
   }
   
   // Reset the board when we start a new game.
@@ -39,8 +46,8 @@ class Board {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctxNext.clearRect(0, 0, this.ctxNext.canvas.width, this.ctxNext.canvas.height);
     this.ctxHold.clearRect(0, 0, this.ctxHold.canvas.width, this.ctxHold.canvas.height);
-    this.piece = new Piece(this.ctx);
-    this.piece.x = 3;
+    this.ctxGarb.clearRect(0, 0, this.ctxGarb.canvas.width, this.ctxGarb.canvas.height)
+    this.piece = new Piece(this.ctx, true);
     this.ghost = Object.assign(Object.create(Object.getPrototypeOf(this.piece)), this.piece)
     this.getNewPiece()
     this.hold = null
@@ -70,7 +77,8 @@ class Board {
   }
 
   getNewPiece() {
-    this.nextPiece = new Piece(this.ctxNext);
+    this.nextPiece = new Piece(this.ctxNext, false);
+    
     this.ctxNext.clearRect(0, 0, this.ctxNext.canvas.width, this.ctxNext.canvas.height);
     this.nextPiece.draw();
   }
@@ -91,7 +99,7 @@ class Board {
       }
       this.piece = this.nextPiece
       this.piece.ctx = this.ctx;
-      this.piece.x = 3;
+      this.piece.setPosition(true)
       this.getNewPiece()
       this.changedHold = false
     }
@@ -108,12 +116,11 @@ class Board {
   holdPiece() {
     if (!this.hold) {
       // this.hold = Object.assign(Object.create(Object.getPrototypeOf(this.piece)), this.piece) // copy piece
-      this.hold = new Piece(this.ctxHold)
+      this.hold = new Piece(this.ctxHold, false)
       this.hold.initShape(this.piece.shapeId)
-      this.hold.x = 0
       this.piece = this.nextPiece 
       this.piece.ctx = this.ctx;
-      this.piece.x = 3;
+      this.piece.setPosition(true)
       this.getNewPiece()
       this.changedHold = true
     } else {
@@ -121,8 +128,7 @@ class Board {
         this.ctxHold.clearRect(0, 0, this.ctxHold.canvas.width, this.ctxHold.canvas.height);
         let pieceShape = this.piece.shapeId
         this.piece.initShape(this.hold.shapeId)
-        this.piece.x = 3
-        this.piece.y = 0
+        this.piece.setPosition(true)
         this.hold.initShape(pieceShape)
         this.changedHold = true
       }
@@ -243,7 +249,7 @@ class Board {
 
     garbageLines = 0
     // document.querySelector(".garbage").innerHTML = garbageLines
-    ctxGarb.clearRect(0, 0, ctxGarb.canvas.width, ctxGarb.canvas.height)
+    this.ctxGarb.clearRect(0, 0, this.ctxGarb.canvas.width, this.ctxGarb.canvas.height)
 
 
     console.table(this.grid)

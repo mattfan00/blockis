@@ -1,0 +1,85 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.main form {
+  width: 500px;
+}
+
+.header {
+  text-align: center;
+}
+
+h1 {
+  margin: 10px;
+}
+
+form {
+  margin-top: 20px;
+}
+
+form div:nth-child(1) {
+  display: grid;
+  grid-template-columns: auto min-content;
+  grid-column-gap: 20px;
+}
+
+form div:nth-child(1) input {
+  font-family: "Maven Pro", sans-serif;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  background-color: #1d1d1d;
+  color: inherit;
+}
+
+form div:nth-child(1) button {
+  color: inherit;
+  background-color: #313131;
+  border: none;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+form div:nth-child(1) button:hover {
+  background-color: #636363;
+}
+
+form div:nth-child(1) button:focus {
+  outline: none;
+}
+
+.selected {
+  background-color: #636363 !important;
+}
+
+.hide {
+  display: none;
+}
+
+form div:nth-child(1) input:focus {
+  outline: none
+}
+
+form div:last-child {
+  text-align: center;
+  margin-top: 20px;
+}
+
+form div:last-child button {
+  color: inherit;
+  background-color: #313131;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+form div:last-child button:hover {
+  background-color: #636363;
+}
