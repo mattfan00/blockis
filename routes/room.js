@@ -5,12 +5,14 @@ const express = require('express')
 
 router.get('/game', (req, res) => {
   Room.find({}, (err, foundRooms) => {
-    if (foundRooms.length == 0) {
+    // filter the rooms to choose from so that they don't include private or full rooms 
+    let filteredRooms = foundRooms.filter(room => !room.private && room.users.length < room.maxSize)
+    if (filteredRooms.length == 0) {
       Room.create({name: 'default'}, (err, newRoom) => {
         res.redirect('/game/' + newRoom.id)
       })
     } else {
-      res.redirect('/game/' + foundRooms[0].id)
+      res.redirect('/game/' + filteredRooms[0].id)
     }
   })
 })
