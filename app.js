@@ -8,7 +8,6 @@ const express = require('express')
       User = require('./models/user')
       Room = require('./models/room')
 
-
 const app = express()
       server = http.createServer(app)
       io = socketio(server)
@@ -34,6 +33,7 @@ app.use(require("express-session")({
   resave: false,
   saveUninitialized: false
 }))
+
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use(new LocalStrategy(User.authenticate()))

@@ -28,7 +28,7 @@ module.exports = (io) => {
           startCountdown(socket, roomId)
         }
 
-        // // Send message to the whole lobby except the user that joined
+       // // Send message to the whole lobby except the user that joined
         // socket.to(roomId).broadcast.emit('message', msg.username + ' has joined the room')
       })
     })
